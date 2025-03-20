@@ -1,0 +1,18 @@
+.navbar {
+    background-color: var(--poke-red);
+    display: flex;
+    justify-content: flex-end;
+    font-weight: 600;
+
+    & a {
+        padding: 1rem;
+
+        &.active-link {
+            box-shadow: inset 0 -4px 0 0 var(--poke-light);
+        }
+
+        &:hover {
+            background-color: hsl(from var(--poke-red) h s calc(l - 5));
+        }
+    }
+}

@@ -1,6 +1,10 @@
 :root {
     --background: #171717;
     --foreground: #ffffff;
+
+    --poke-red: #ee1515;
+    --poke-dark: #222224;
+    --poke-light: #f0f0f0;
 }
 
 html,
@@ -30,4 +34,8 @@ body {
 a {
     color: inherit;
     text-decoration: none;
+
+    &:hover {
+        filter: brightness(0.9);
+    }
 }
