@@ -1,0 +1,7 @@
+#guess-page {
+    padding-block: 2rem;
+
+    & .guess-page__title {
+        text-align: center;
+    }
+}

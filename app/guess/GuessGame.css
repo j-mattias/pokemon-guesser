@@ -1,0 +1,26 @@
+& .guess-game-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    & .guess-game {
+        display: flex;
+        align-items: center;
+
+        & .guess-game__pokemon-image {
+            filter: brightness(0);
+
+            &.revealed {
+                filter: brightness(1);
+                transition: all 1s ease-in;
+            }
+        }
+
+        & .guess-game__answer {
+            font-size: 4rem;
+            font-weight: bold;
+        }
+    }
+}
