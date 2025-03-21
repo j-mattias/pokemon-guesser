@@ -38,10 +38,13 @@ export default function GuessGame() {
         setNext(!next);
     };
 
+    // Reset the game
     const handleRetry = () => {
         setIsRevealed(false);
         setIsGameOver(false);
         setScore(0);
+        setPrevPokemonId(new Set());
+        setNext(!next);
     };
 
     // Prevents the same pokemon from being displayed twice during a game
