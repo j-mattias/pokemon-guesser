@@ -90,14 +90,20 @@ export default function GuessGame() {
     return (
         <div className="guess-game-wrapper">
             <figure className="guess-game">
-                <Image
-                    className={`guess-game__pokemon-image ${isRevealed ? "revealed" : ""}`}
-                    src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`}
-                    alt={"Image of a pokemon to guess"}
-                    width={500}
-                    height={500}
-                />
-                <figcaption className={`guess-game__answer`}>{isRevealed ? pokemon.toUpperCase() : "?"}</figcaption>
+                {pokemonId ? (
+                    <Image
+                        className={`guess-game__pokemon-image ${isRevealed ? "revealed" : ""}`}
+                        src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`}
+                        alt={"Image of a pokemon to guess"}
+                        width={500}
+                        height={500}
+                    />
+                ) : (
+                    "Loading..."
+                )}
+                <figcaption className={`guess-game__answer`}>
+                    {isRevealed ? pokemon.toUpperCase() : "?"}
+                </figcaption>
             </figure>
             {isGameOver ? (
                 <>
@@ -111,7 +117,7 @@ export default function GuessGame() {
                     {isRevealed ? (
                         <button onClick={handleNext}>Next</button>
                     ) : (
-                        <GuessForm handleGuess={handleGuess} />
+                        <GuessForm handleGuess={handleGuess} generation={1} />
                     )}
                 </>
             )}
