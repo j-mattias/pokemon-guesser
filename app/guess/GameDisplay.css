@@ -1,0 +1,19 @@
+.game-display {
+    display: flex;
+    align-items: center;
+
+    & .game-display__pokemon-image {
+        filter: brightness(0);
+
+        &.revealed {
+            filter: brightness(1);
+            transition: all 1s ease-in;
+        }
+    }
+
+    & .game-display__answer {
+        font-size: 4rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+}

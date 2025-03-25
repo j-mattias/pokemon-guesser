@@ -1,12 +1,14 @@
 "use client";
 
-import Image from "next/image";
-
 import { MainClient, NamedAPIResourceList, Generation } from "pokenode-ts";
+
+import { useEffect, useState } from "react";
+
 import { randomizeNumber } from "@/utils/helpers";
 
 import GuessForm from "./GuessForm";
-import { useEffect, useState } from "react";
+import GameSettings from "./GameSettings";
+import GameDisplay from "./GameDisplay";
 
 import "./GuessGame.css";
 
@@ -15,16 +17,20 @@ interface IGuessGame {
 }
 
 export default function GuessGame({ generations }: IGuessGame) {
+    // Pokemon state
     const [pokemon, setPokemon] = useState<string>("");
+    const [pokemonId, setPokemonId] = useState<string>("");
+    const [prevPokemonId, setPrevPokemonId] = useState<Set<number>>(new Set());
+    const [isPokemonLoading, setIsPokemonLoading] = useState<boolean>(true);
+    // Game state
     const [score, setScore] = useState<number>(0);
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
     const [isRevealed, setIsRevealed] = useState<boolean>(false);
-    const [pokemonId, setPokemonId] = useState<string>("");
-    const [prevPokemonId, setPrevPokemonId] = useState<Set<number>>(new Set());
+    const [isGameActive, setIsGameActive] = useState<boolean>(false);
+    // Game settings
     const [next, setNext] = useState<boolean>(false);
     const [generationNum, setGenerationNum] = useState<number>(1);
     const [generation, setGeneration] = useState<Generation | undefined>(undefined);
-    const [isGameActive, setIsGameActive] = useState<boolean>(false);
 
     const pokeApi = new MainClient({ logs: true });
 
@@ -58,6 +64,10 @@ export default function GuessGame({ generations }: IGuessGame) {
     const handleSelectGeneration = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setGenerationNum(+e.target.value);
         handleRetry();
+    };
+
+    const handleSetIsGameActive = (bool: boolean) => {
+        setIsGameActive(bool);
     };
 
     // Prevents the same pokemon from being displayed twice during a game
@@ -109,6 +119,8 @@ export default function GuessGame({ generations }: IGuessGame) {
         const randomNum = preventRepeat(start, end);
         console.log("Previous ids: ", prevPokemonId);
 
+        setIsPokemonLoading(true);
+
         // Fetch a random pokemon by id
         const fetchPokemon = async (id: number) => {
             try {
@@ -119,8 +131,11 @@ export default function GuessGame({ generations }: IGuessGame) {
                 // Convert the pokemon id to a 3 digit string, compatible with the image url
                 const pokemonId = id.toString().padStart(3, "0");
                 setPokemonId(pokemonId);
+
+                setIsPokemonLoading(false);
             } catch (error) {
                 console.error(error);
+                setIsPokemonLoading(false);
             }
         };
         fetchPokemon(randomNum);
@@ -129,38 +144,21 @@ export default function GuessGame({ generations }: IGuessGame) {
     return (
         <div className="guess-game-wrapper">
             {generation && <h2 className="generation-title">{generation.name}</h2>}
-            <figure className="guess-game">
-                {pokemonId ? (
-                    <Image
-                        className={`guess-game__pokemon-image ${isRevealed ? "revealed" : ""}`}
-                        src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`}
-                        alt={"Image of a pokemon to guess"}
-                        width={500}
-                        height={500}
-                    />
-                ) : (
-                    "Loading..."
-                )}
-                <figcaption className={`guess-game__answer`}>
-                    {isRevealed ? pokemon : "?"}
-                </figcaption>
-            </figure>
 
-            {!isGameActive && (
-                <div className="game-settings">
-                    <label className="game-settings__label" htmlFor="generations">Pick a generation</label>
-                    <select id="generations" onChange={handleSelectGeneration}>
-                        {generations.results.map((gen, index) => (
-                            <option key={gen.name} value={index + 1}>
-                                {gen.name.toUpperCase()}
-                            </option>
-                        ))}
-                    </select>
-                    <button className="start-game" onClick={() => setIsGameActive(true)}>
-                        Start
-                    </button>
-                </div>
-            )}
+            <GameDisplay
+                pokemonId={pokemonId}
+                pokemon={pokemon}
+                isPokemonLoading={isPokemonLoading}
+                isRevealed={isRevealed}
+            />
+
+            <GameSettings
+                generations={generations}
+                isGameActive={isGameActive}
+                handleSelectGeneration={handleSelectGeneration}
+                handleSetIsGameActive={handleSetIsGameActive}
+                generationNum={generationNum}
+            />
 
             {isGameActive && (
                 <div className={`game-controls`}>
