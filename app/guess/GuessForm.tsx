@@ -1,20 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { GameClient } from "pokenode-ts";
+import { Generation } from "pokenode-ts";
 import "./GuessForm.css";
 
 interface IGuessForm {
     handleGuess: (guess: string) => void;
-    generation: number;
+    generation: Generation | undefined;
 }
 
 export default function GuessForm({ handleGuess, generation }: IGuessForm) {
     const [guess, setGuess] = useState<string>("");
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-
-    const genApi = new GameClient({ logs: true });
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -41,22 +39,13 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
         setFilteredSuggestions([]);
     };
 
-    // Fetch the list of pokemon for the given generation
+    // Extract the names of the pokemon into a list, to use for suggestions
     useEffect(() => {
-        const fetchGeneration = async (gen: number) => {
-            try {
-                // API complains but if you don't includee the / it doesn't work
-                const genPokemonList = await genApi.getGenerationById(gen);
-                console.log("List, ", genPokemonList);
-
-                const list = genPokemonList.pokemon_species.map((pokemon) => pokemon.name);
-                setSuggestions(list);
-                console.log("suggestions: ", suggestions, list);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchGeneration(generation);
+        if (generation) {
+            const nameSuggestions = generation.pokemon_species.map((pokemon) => pokemon.name);
+            setSuggestions(nameSuggestions);
+            console.log("suggestions: ", nameSuggestions);
+        }
     }, [generation]);
 
     return (

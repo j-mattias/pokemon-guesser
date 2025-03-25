@@ -5,6 +5,10 @@
     align-items: center;
     gap: 2rem;
 
+    & .generation-title {
+        text-transform: uppercase;
+    }
+
     & .guess-game {
         display: flex;
         align-items: center;
@@ -21,6 +25,22 @@
         & .guess-game__answer {
             font-size: 4rem;
             font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+
+    & .game-settings {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        & .game-settings__label {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        & #generations {
+            padding: 0.5rem;
         }
     }
 }
