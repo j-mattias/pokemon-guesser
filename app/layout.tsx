@@ -11,7 +11,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "Pokemon Guesser",
+    title: {
+        default: "Pokemon Guesser",
+        template: "%s | Pokemon Guesser",
+    },
     description: "Guess pokemon based on their silhouette",
 };
 

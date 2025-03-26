@@ -2,6 +2,11 @@ import { GameClient } from "pokenode-ts";
 import GuessGame from "./GuessGame";
 
 import "./page.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Who's that pokemon?",
+}
 
 export default async function GuessPage() {
 
