@@ -24,7 +24,9 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${inter.variable}`}>
                 <Navbar/>
-                {children}
+                <div id="page-wrapper">
+                    {children}
+                </div>
             </body>
         </html>
     );

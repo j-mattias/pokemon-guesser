@@ -1,19 +1,52 @@
 .game-display {
     display: flex;
     align-items: center;
+    width: 100%;
+    background-image: url("/pokemonGuesser_background.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    position: relative;
+    overflow: hidden;
 
-    & .game-display__pokemon-image {
-        filter: brightness(0);
+    & .game-display__image-wrapper {
+        display: grid;
+        grid-template-rows: 1fr;
+        align-items: center;
+        justify-items: center;
+        grid-auto-columns: 450px 1fr;
 
-        &.revealed {
-            filter: brightness(1);
-            transition: all 1s ease-in;
+        & .game-display__glow-image {
+            grid-row: 1 / 1;
+            grid-column: 1 / 1;
+        }
+        
+        & .game-display__loading,
+        & .game-display__pokemon-image {
+            grid-row: 1 / 1;
+            grid-column: 1 / 1;
+            color: var(--poke-dark);
+            font-weight: bold;
+        }
+
+        & .game-display__pokemon-image {
+            filter: brightness(0);
+    
+            &.revealed {
+                filter: brightness(1);
+                transition: all 1s ease-in;
+            }
         }
     }
 
     & .game-display__answer {
-        font-size: 4rem;
+        font-size: 3rem;
         font-weight: bold;
         text-transform: uppercase;
+        margin: 0 auto;
+        padding-right: 1rem;
+        right: 1rem;
+        filter: drop-shadow(2px 2px 0px black);
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 2px -2px 0px rgba(0, 0, 0, 1), -2px 2px 0px rgba(0, 0, 0, 1);
+        color: var(--poke-yellow);
     }
 }

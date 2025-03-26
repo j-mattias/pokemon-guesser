@@ -17,17 +17,26 @@ export default function GameDisplay({
 }: IGameDisplay) {
     return (
         <figure className="game-display">
-            {pokemonId && !isPokemonLoading ? (
+            <div className="game-display__image-wrapper">
                 <Image
-                    className={`game-display__pokemon-image ${isRevealed ? "revealed" : ""}`}
-                    src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`}
-                    alt={"Image of a pokemon to guess"}
-                    width={500}
-                    height={500}
+                    className="game-display__glow-image"
+                    src="glow.svg"
+                    alt="Shining glow backdrop for pokemon"
+                    width={700}
+                    height={700}
                 />
-            ) : (
-                "Loading..."
-            )}
+                {pokemonId && !isPokemonLoading ? (
+                    <Image
+                        className={`game-display__pokemon-image ${isRevealed ? "revealed" : ""}`}
+                        src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`}
+                        alt={"Image of a pokemon to guess"}
+                        width={450}
+                        height={450}
+                    />
+                ) : (
+                    <p className="game-display__loading">Loading...</p>
+                )}
+            </div>
             <figcaption className={`game-display__answer`}>{isRevealed ? pokemon : "?"}</figcaption>
         </figure>
     );
