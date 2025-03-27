@@ -38,7 +38,7 @@ export default function GameSettings({
                     ))}
                 </select>
                 <button className="start-game" onClick={() => handleSetIsGameActive(true)}>
-                    Start
+                    Play
                 </button>
             </div>
         </>

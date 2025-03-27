@@ -16,6 +16,14 @@ interface IGuessGame {
     generations: NamedAPIResourceList;
 }
 
+interface IGenRange {
+    start: number;
+    end: number;
+}
+
+const GEN_ONE_TOTAL = 151;
+const DEFAULT_GEN_NUM = 1;
+
 export default function GuessGame({ generations }: IGuessGame) {
     // Pokemon state
     const [pokemon, setPokemon] = useState<string>("");
@@ -27,12 +35,20 @@ export default function GuessGame({ generations }: IGuessGame) {
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
     const [isRevealed, setIsRevealed] = useState<boolean>(false);
     const [isGameActive, setIsGameActive] = useState<boolean>(false);
+    const [genTotal, setGenTotal] = useState<number>(GEN_ONE_TOTAL);
     // Game settings
     const [next, setNext] = useState<boolean>(false);
-    const [generationNum, setGenerationNum] = useState<number>(1);
+    const [generationNum, setGenerationNum] = useState<number>(DEFAULT_GEN_NUM);
     const [generation, setGeneration] = useState<Generation | undefined>(undefined);
+    const [generationRange, setGenerationRange] = useState<IGenRange>({
+        start: DEFAULT_GEN_NUM,
+        end: GEN_ONE_TOTAL,
+    });
 
     const pokeApi = new MainClient({ logs: true });
+
+    // Check if game is won
+    const isGameWon = score === genTotal;
 
     // Handle the guess
     const handleGuess = (guess: string) => {
@@ -104,19 +120,27 @@ export default function GuessGame({ generations }: IGuessGame) {
         // setPrevPokemonId(new Set());
     }, [generationNum]);
 
-    // Fetch a random pokemon on first render and when the next button is clicked
+    // Update generation range
     useEffect(() => {
         // Get the start and end of the generation
         // The first pokemon in the list is the first id in the generation
         // But the last pokemon has to be calculated based on the total as it's not sorted
         const idRegex = /(\d+)\/$/;
-        const start = Number(generation?.pokemon_species[0].url.match(idRegex)?.[1]) || 1;
-        const genTotal = generation?.pokemon_species.length || 151;
-        const end = genTotal - 1 + start;
-        console.log("Gen range: ", start, end);
+        const start =
+            Number(generation?.pokemon_species[0].url.match(idRegex)?.[1]) || DEFAULT_GEN_NUM;
+        const genTotalNum = generation?.pokemon_species.length || GEN_ONE_TOTAL;
+        setGenTotal(genTotalNum);
+        const end = genTotalNum - 1 + start;
 
+        console.log("Gen range: ", start, end);
+        setGenerationRange((prevRange) => ({ ...prevRange, start, end }));
+    }, [generation]);
+
+    // Fetch a random pokemon on first render and when the next button is clicked
+    useEffect(() => {
+        console.log("Ranges: ", generationRange);
         // Get a unique random number
-        const randomNum = preventRepeat(start, end);
+        const randomNum = preventRepeat(generationRange.start, generationRange.end);
         console.log("Previous ids: ", prevPokemonId);
 
         setIsPokemonLoading(true);
@@ -138,8 +162,9 @@ export default function GuessGame({ generations }: IGuessGame) {
                 setIsPokemonLoading(false);
             }
         };
-        fetchPokemon(randomNum);
-    }, [next, generation]);
+        fetchPokemon(randomNum)
+        
+    }, [next, generationRange]);
 
     return (
         <div className="guess-game-wrapper">
@@ -162,15 +187,26 @@ export default function GuessGame({ generations }: IGuessGame) {
 
             {isGameActive && (
                 <div className={`game-controls`}>
-                    {isGameOver ? (
+                    {isGameWon ? (
+                        <>
+                            <h2>{`Well done! You cleared ${generation?.name.toUpperCase()}.`}</h2>
+                            <button onClick={handleRetry}>Play again?</button>
+                        </>
+                    ) : isGameOver ? (
                         <>
                             <h2>Game Over</h2>
-                            <h3>Score: {score}</h3>
+                            <h3>
+                                Score: {score} / {genTotal}
+                            </h3>
                             <button onClick={handleRetry}>Try again?</button>
                         </>
                     ) : (
                         <>
-                            {score > 0 && <h3>Score: {score}</h3>}
+                            {score > 0 && (
+                                <h3>
+                                    Score: {score} / {genTotal}
+                                </h3>
+                            )}
                             {isRevealed ? (
                                 <button onClick={handleNext}>Next</button>
                             ) : (
