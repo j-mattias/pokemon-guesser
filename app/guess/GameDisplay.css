@@ -7,6 +7,12 @@
     background-size: 100%;
     position: relative;
     overflow: hidden;
+    filter: none;
+    transition: filter 1s ease-in;
+
+    &.grayscale {
+        filter: grayscale(1);
+    }
 
     & .game-display__image-wrapper {
         display: grid;
@@ -19,7 +25,7 @@
             grid-row: 1 / 1;
             grid-column: 1 / 1;
         }
-        
+
         & .game-display__loading,
         & .game-display__pokemon-image {
             grid-row: 1 / 1;
@@ -30,7 +36,7 @@
 
         & .game-display__pokemon-image {
             filter: brightness(0);
-    
+
             &.revealed {
                 filter: brightness(1);
                 transition: all 1s ease-in;
@@ -46,7 +52,8 @@
         padding-right: 1rem;
         right: 1rem;
         filter: drop-shadow(2px 2px 0px black);
-        text-shadow: 2px 2px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 2px -2px 0px rgba(0, 0, 0, 1), -2px 2px 0px rgba(0, 0, 0, 1);
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1),
+            2px -2px 0px rgba(0, 0, 0, 1), -2px 2px 0px rgba(0, 0, 0, 1);
         color: var(--poke-yellow);
     }
 }

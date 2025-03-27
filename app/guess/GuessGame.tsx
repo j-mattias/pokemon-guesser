@@ -173,6 +173,7 @@ export default function GuessGame({ generations }: IGuessGame) {
                 pokemon={pokemon}
                 isPokemonLoading={isPokemonLoading}
                 isRevealed={isRevealed}
+                isGameOver={isGameOver}
             />
 
             <GameSettings
@@ -190,7 +191,7 @@ export default function GuessGame({ generations }: IGuessGame) {
                         genTotal={genTotal}
                         generationName={generation?.name}
                     />
-                    
+
                     <div className={`game-controls`}>
                         {isGameWon ? (
                             <>

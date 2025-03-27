@@ -7,6 +7,7 @@ interface IGameDisplay {
     isPokemonLoading: boolean;
     isRevealed: boolean;
     pokemon: string;
+    isGameOver: boolean;
 }
 
 export default function GameDisplay({
@@ -14,9 +15,12 @@ export default function GameDisplay({
     isPokemonLoading,
     isRevealed,
     pokemon,
+    isGameOver,
 }: IGameDisplay) {
+    const computedGrayScale = isGameOver ? "grayscale" : "";
+
     return (
-        <figure className="game-display">
+        <figure className={`game-display ${computedGrayScale}`}>
             <div className="game-display__image-wrapper">
                 <Image
                     className="game-display__glow-image"
