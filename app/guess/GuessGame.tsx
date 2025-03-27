@@ -9,6 +9,7 @@ import { randomizeNumber } from "@/utils/helpers";
 import GuessForm from "./GuessForm";
 import GameSettings from "./GameSettings";
 import GameDisplay from "./GameDisplay";
+import ScoreProgress from "./ScoreProgress";
 
 import "./GuessGame.css";
 
@@ -162,14 +163,11 @@ export default function GuessGame({ generations }: IGuessGame) {
                 setIsPokemonLoading(false);
             }
         };
-        fetchPokemon(randomNum)
-        
+        fetchPokemon(randomNum);
     }, [next, generationRange]);
 
     return (
         <div className="guess-game-wrapper">
-            {generation && <h2 className="generation-title">{generation.name}</h2>}
-
             <GameDisplay
                 pokemonId={pokemonId}
                 pokemon={pokemon}
@@ -186,35 +184,35 @@ export default function GuessGame({ generations }: IGuessGame) {
             />
 
             {isGameActive && (
-                <div className={`game-controls`}>
-                    {isGameWon ? (
-                        <>
-                            <h2>{`Well done! You cleared ${generation?.name.toUpperCase()}.`}</h2>
-                            <button onClick={handleRetry}>Play again?</button>
-                        </>
-                    ) : isGameOver ? (
-                        <>
-                            <h2>Game Over</h2>
-                            <h3>
-                                Score: {score} / {genTotal}
-                            </h3>
-                            <button onClick={handleRetry}>Try again?</button>
-                        </>
-                    ) : (
-                        <>
-                            {score > 0 && (
-                                <h3>
-                                    Score: {score} / {genTotal}
-                                </h3>
-                            )}
-                            {isRevealed ? (
-                                <button onClick={handleNext}>Next</button>
-                            ) : (
-                                <GuessForm handleGuess={handleGuess} generation={generation} />
-                            )}
-                        </>
-                    )}
-                </div>
+                <>
+                    <ScoreProgress
+                        score={score}
+                        genTotal={genTotal}
+                        generationName={generation?.name}
+                    />
+                    
+                    <div className={`game-controls`}>
+                        {isGameWon ? (
+                            <>
+                                <h2>{`Well done! You cleared ${generation?.name.toUpperCase()}.`}</h2>
+                                <button onClick={handleRetry}>Play again?</button>
+                            </>
+                        ) : isGameOver ? (
+                            <>
+                                <h2>Game Over</h2>
+                                <button onClick={handleRetry}>Try again?</button>
+                            </>
+                        ) : (
+                            <>
+                                {isRevealed ? (
+                                    <button onClick={handleNext}>Next</button>
+                                ) : (
+                                    <GuessForm handleGuess={handleGuess} generation={generation} />
+                                )}
+                            </>
+                        )}
+                    </div>
+                </>
             )}
         </div>
     );
