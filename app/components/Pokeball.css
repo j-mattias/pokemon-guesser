@@ -1,0 +1,114 @@
+.pokeball {
+    /* Outer rim */
+    width: 54px;
+    height: 54px;
+    background-color: black;
+    border-radius: 50%;
+    position: relative;
+
+    scale: var(--pokeball-scale);
+
+    /* Upper half */
+    &::before {
+        box-shadow: inset 3px -2px 0px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: 3px;
+        left: 50%;
+        translate: -50% 0;
+        content: "";
+        width: 48px;
+        height: 24px;
+        background-color: var(--poke-red);
+        border-radius: 12rem 12rem 0 0;
+    }
+
+    /* Lower half */
+    &::after {
+        box-shadow: inset 3px -3px 0px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        translate: -50% 0;
+        content: "";
+        width: 48px;
+        height: 24px;
+        background-color: var(--poke-light);
+        border-radius: 0 0 12rem 12rem;
+    }
+
+    & .pokebutton {
+        /* Line */
+        width: 52px;
+        height: 4px;
+        background-color: black;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        z-index: 2;
+
+        /* Button */
+        &::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            border: 4px solid black;
+        }
+
+        /* Upper shine */
+        &::after {
+            content: "";
+            width: 5px;
+            height: 10px;
+            position: absolute;
+            top: -18px;
+            right: 10px;
+            rotate: -45deg;
+            background-color: rgba(255, 255, 255, 0.75);
+            border-radius: 50%;
+        }
+    }
+
+    &.shake {
+        animation: shake 1s ease-in-out infinite;
+        transform-origin: 50% 90%;
+    }
+
+    &.spin {
+        animation: spin 1s linear infinite;
+        transform-origin: center;
+    }
+}
+
+@keyframes spin {
+    to {
+        rotate: 1turn;
+    }
+}
+
+@keyframes shake {
+    0% {
+        rotate: 0deg;
+    }
+    10% {
+        rotate: 0deg;
+    }
+    30% {
+        rotate: -20deg;
+    }
+    70% {
+        rotate: 20deg;
+    }
+    90% {
+        rotate: 0deg;
+    }
+    100% {
+        rotate: 0deg;
+    }
+}

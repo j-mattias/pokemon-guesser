@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import Pokeball from "../components/Pokeball";
+
 import "./GameDisplay.css";
 
 interface IGameDisplay {
@@ -38,7 +40,7 @@ export default function GameDisplay({
                         height={450}
                     />
                 ) : (
-                    <p className="game-display__loading">Loading...</p>
+                    <Pokeball className="game-display__loading" loader={"shake"} />
                 )}
             </div>
             <figcaption className={`game-display__answer`}>{isRevealed ? pokemon : "?"}</figcaption>
