@@ -2,7 +2,8 @@ import React from "react";
 
 import { PokemonClient } from "pokenode-ts";
 
-import ListGlowItemBorders, { TempCard } from "../components/ListGlowItemBorders";
+import ListGlowItemBorders from "../components/ListGlowItemBorders";
+import PokemonCard from "../components/PokemonCard";
 import { extractPokemonId, padStartId } from "@/utils/helpers";
 import { IPokemonBasic } from "@/utils/interfaces";
 
@@ -27,7 +28,7 @@ export default async function PokedexPage() {
             <h1 className="pokedex-page__title">Pokedex</h1>
             <ListGlowItemBorders
                 list={modifiedPokemonList}
-                cardComponent={TempCard}
+                cardComponent={PokemonCard}
                 itemStyles={itemStyles}
             />
         </main>

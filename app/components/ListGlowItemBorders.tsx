@@ -2,12 +2,6 @@
 
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
 
-import Image from "next/image";
-
-import { NamedAPIResource } from "pokenode-ts";
-
-import { extractPokemonId, padStartId } from "@/utils/helpers";
-
 import "./ListGlowItemBorders.css";
 
 export interface IMousePos {
@@ -232,24 +226,5 @@ function ItemContainer({
         >
             <div className="lgib-item-container__wrapper">{children}</div>
         </div>
-    );
-}
-
-// Temp for testing, DELETE
-export function TempCard({ name, url }: NamedAPIResource) {
-    const pokemonId = extractPokemonId(url);
-    const paddedId = padStartId(pokemonId);
-
-    return (
-        <article className="temp-card">
-            <Image
-                src={`https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${paddedId}.png`}
-                alt={`Image of ${name}`}
-                width={100}
-                height={100}
-                className="pokemon-card__image"
-            />
-            <h3 className="pokemon-card__title">{name}</h3>
-        </article>
     );
 }

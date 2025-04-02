@@ -1,43 +1,15 @@
 "use client";
 
-import { CSSProperties, useEffect, useRef, useState } from "react";
-
 import Image from "next/image";
 
+import { IPokemonBasic } from "@/utils/interfaces";
+
 import "./PokemonCard.css";
-import { IMousePos } from "./PokemonList";
 
-interface IPokemonCard {
-    name: string;
-    paddedId: string;
-    mousePos: IMousePos;
-    windowChange: boolean;
-}
-
-export default function PokemonCard({ name, paddedId, mousePos, windowChange }: IPokemonCard) {
-    const [cardRect, setCardRect] = useState<DOMRect | null>(null);
-    const cardRef = useRef<HTMLElement | null>(null);
-
-    // Update the bounding client when the window changes size
-    // Otherwise the effect will be offset incorrectly
-    useEffect(() => {
-        if (cardRef.current) {
-            setCardRect(cardRef.current.getBoundingClientRect());
-        }
-    }, [windowChange])
-    
-    // Get left and top position for the card
-    const left = cardRect?.left || 0;
-    const top = cardRect?.top || 0;
-
-    // Calculate and set the updated position for the radial gradient
-    const style = {
-        "--mouse-x": `${mousePos.x - left}px`,
-        "--mouse-y": `${mousePos.y - top}px`,
-    } as CSSProperties;
+export default function PokemonCard({ name, paddedId }: IPokemonBasic) {
 
     return (
-        <article className="pokemon-card" style={style} ref={cardRef}>
+        <article className="pokemon-card">
             <div className="pokemon-card__wrapper">
                 <Image
                     src={`https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${paddedId}.png`}
