@@ -1,0 +1,42 @@
+.pagination-wrapper {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    & .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        list-style: none;
+
+        & .pagination__item {
+            font-weight: 600;
+
+            & .pagination__link {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0.4rem;
+                background-color: var(--poke-red);
+                border-radius: 50%;
+                min-width: 4ch;
+                min-height: 4ch;
+                border: 2px solid transparent;
+
+                &.active_link {
+                    border-color: var(--poke-light);
+                }
+            }
+        }
+    }
+
+    & .current-page {
+        background-color: var(--primary-shadow);
+        padding: 0.2rem 0.4rem;
+        border-radius: var(--b-radius);
+    }
+}
