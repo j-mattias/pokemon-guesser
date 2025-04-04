@@ -12,7 +12,7 @@ export default function PokemonCard({ name, paddedId }: IPokemonBasic) {
         <article className="pokemon-card">
             <div className="pokemon-card__wrapper">
                 <Image
-                    src={`https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${paddedId}.png`}
+                    src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedId}.png`}
                     alt={`Image of ${name}`}
                     width={100}
                     height={100}

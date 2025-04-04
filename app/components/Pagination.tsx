@@ -10,7 +10,6 @@ interface IPagination {
 export default function Pagination({ pages, currentPage }: IPagination) {
     // Create an array with indexes based on the amount of pages
     const numPages = Array.from({ length: pages }, (_, i) => i + 1);
-    console.log(numPages);
 
     return (
         <div className="pagination-wrapper">

@@ -11,6 +11,7 @@ import { IPokemonBasic } from "@/utils/interfaces";
 import "./page.css";
 
 const LIMIT = 40;
+const POKEMON_MAX_COUNT = 1025;
 
 export default async function PokedexPage({
     searchParams,
@@ -23,7 +24,12 @@ export default async function PokedexPage({
     console.log("searchParams: ", page);
 
     // Calculate the offset for fetching pokemon
-    const offset = (currentPage - 1) * LIMIT || 0;
+    let offset: number = (currentPage - 1) * LIMIT || 0;
+    // Prevent offset from getting pokemon beyond the max count
+    // Max allowed offset is currently 985, since offset starts at 0, and max count is 1025
+    if (offset + LIMIT > POKEMON_MAX_COUNT) {
+        offset = POKEMON_MAX_COUNT - LIMIT;
+    }
     console.log("offset", offset);
 
     const pokemonApi = new PokemonClient();
@@ -31,9 +37,8 @@ export default async function PokedexPage({
     const pokemonList = await pokemonApi.listPokemons(offset, LIMIT);
     console.log(pokemonList);
 
-    // Calculate the amount of pages needed to display all pokemon in the list
-    const pages = Math.ceil(pokemonList.count / LIMIT);
-    console.log(pages);
+    // Calculate the amount of pages needed to display all pokemon (with available images) in the list
+    const pages = Math.ceil(POKEMON_MAX_COUNT / LIMIT);
 
     // Add id and paddedId to each pokemon object and store it in a new list
     const modifiedPokemonList: IPokemonBasic[] = pokemonList.results.map((pokemon) => {
