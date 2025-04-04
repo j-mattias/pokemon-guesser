@@ -34,7 +34,7 @@ export default function GameDisplay({
                 {pokemonId && !isPokemonLoading ? (
                     <Image
                         className={`game-display__pokemon-image ${isRevealed ? "revealed" : ""}`}
-                        src={`https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${pokemonId}.png`}
+                        src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`}
                         alt={"Image of a pokemon to guess"}
                         width={450}
                         height={450}
