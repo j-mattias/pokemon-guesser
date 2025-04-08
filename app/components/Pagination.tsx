@@ -1,5 +1,9 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+
+import { useCreateQueryString } from "@/utils/customHooks";
 import "./Pagination.css";
 
 interface IPagination {
@@ -11,13 +15,22 @@ export default function Pagination({ pages, currentPage }: IPagination) {
     // Create an array with indexes based on the amount of pages
     const numPages = Array.from({ length: pages }, (_, i) => i + 1);
 
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+
+    // Merge previous searchParams with new ones
+    const createQueryString = useCreateQueryString(searchParams);
+
     return (
         <div className="pagination-wrapper">
             <ul className="pagination">
                 {/* First */}
                 {currentPage > 1 && (
                     <li className="pagination__item">
-                        <Link className={`pagination__link`} href={`/pokedex/?page=${1}`}>
+                        <Link
+                            className={`pagination__link`}
+                            href={`${pathname}?${createQueryString("page", `${1}`)}`}
+                        >
                             &#171;
                         </Link>
                     </li>
@@ -28,7 +41,7 @@ export default function Pagination({ pages, currentPage }: IPagination) {
                     <li className="pagination__item">
                         <Link
                             className={`pagination__link`}
-                            href={`/pokedex/?page=${currentPage - 1}`}
+                            href={`${pathname}?${createQueryString("page", `${currentPage - 1}`)}`}
                         >
                             &#x2039;
                         </Link>
@@ -45,7 +58,7 @@ export default function Pagination({ pages, currentPage }: IPagination) {
                         <li className={`pagination__item`} key={page}>
                             <Link
                                 className={`pagination__link ${activeLink}`}
-                                href={`/pokedex/?page=${page}`}
+                                href={`${pathname}?${createQueryString("page", `${page}`)}`}
                             >
                                 {page}
                             </Link>
@@ -58,7 +71,7 @@ export default function Pagination({ pages, currentPage }: IPagination) {
                     <li className="pagination__item">
                         <Link
                             className={`pagination__link`}
-                            href={`/pokedex/?page=${currentPage + 1}`}
+                            href={`${pathname}?${createQueryString("page", `${currentPage + 1}`)}`}
                         >
                             &#x203A;
                         </Link>
@@ -68,7 +81,10 @@ export default function Pagination({ pages, currentPage }: IPagination) {
                 {/* Last */}
                 {currentPage < pages && (
                     <li className="pagination__item">
-                        <Link className={`pagination__link`} href={`/pokedex/?page=${pages}`}>
+                        <Link
+                            className={`pagination__link`}
+                            href={`${pathname}?${createQueryString("page", `${pages}`)}`}
+                        >
                             &#187;
                         </Link>
                     </li>

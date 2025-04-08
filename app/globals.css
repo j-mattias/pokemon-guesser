@@ -2,6 +2,7 @@
     --background: #171717;
     --foreground: #ffffff;
     --primary-shadow: rgba(0, 0, 0, 0.4);
+    --faded-gray: rgba(70, 70, 70, 0.5);
 
     --poke-red: #ee1515;
     --poke-dark: #222224;
