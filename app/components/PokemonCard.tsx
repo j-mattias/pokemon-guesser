@@ -1,16 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { IPokemonBasic } from "@/utils/interfaces";
 
 import "./PokemonCard.css";
 
-export default function PokemonCard({ name, paddedId }: IPokemonBasic) {
+export default function PokemonCard({ name, paddedId, id }: IPokemonBasic) {
+    const pathname = usePathname();
 
     return (
-        <article className="pokemon-card">
-            <div className="pokemon-card__wrapper">
+        <Link className="pokemon-card-link" href={`${pathname}/${id}`} scroll={false}>
+            <article className="pokemon-card">
                 <Image
                     src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedId}.png`}
                     alt={`Image of ${name}`}
@@ -19,7 +22,7 @@ export default function PokemonCard({ name, paddedId }: IPokemonBasic) {
                     className="pokemon-card__image"
                 />
                 <h3 className="pokemon-card__title">{name}</h3>
-            </div>
-        </article>
+            </article>
+        </Link>
     );
 }

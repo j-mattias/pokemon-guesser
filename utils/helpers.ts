@@ -1,5 +1,7 @@
 import { NamedAPIResource } from "pokenode-ts";
 import { IPokemonBasic } from "./interfaces";
+import { TypeColorKeys } from "./types";
+import { typeColors } from "@/data/typeColors";
 
 // Randomize a number between min and max
 export function randomizeNumber(min: number, max: number): number {
@@ -25,4 +27,17 @@ export function addIdsToPokemonList(pokemonList: NamedAPIResource[]): IPokemonBa
         const paddedId = padStartId(id);
         return { ...pokemon, id, paddedId };
     });
+}
+
+// Replaces specified character(s) with a space
+export function replaceCharWithSpace(str: string, char: string) {
+    return str.split(char).join(" ");
+}
+
+// Get the color for a specific pokemon type
+export function getTypeColor(key: string) {
+    if (key in typeColors) {
+        return typeColors[key as TypeColorKeys];
+    }
+    return "#7f7f7f";
 }

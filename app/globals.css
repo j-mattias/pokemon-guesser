@@ -58,6 +58,10 @@ a {
     }
 }
 
+img {
+    height: 100%;
+}
+
 button {
     padding: 0.6rem 1rem;
     border-radius: var(--b-radius);

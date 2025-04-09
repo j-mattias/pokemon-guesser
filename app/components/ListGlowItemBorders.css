@@ -55,6 +55,7 @@
         top: 0px;
         transition: opacity 0.5s;
         opacity: 0;
+        pointer-events: none;
     }
 
     /* Card radial color overlay */
