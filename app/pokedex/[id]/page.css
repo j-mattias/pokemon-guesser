@@ -1,11 +1,9 @@
-.pokedex-modal {
+.pokemon-details-page {
     display: flex;
     gap: 1rem;
     flex-direction: column;
     align-items: center;
-    background-color: #1d1d1d;
     padding: 1rem;
-    border-radius: var(--b-radius);
     text-transform: capitalize;
 
     & ul {
@@ -29,7 +27,6 @@
                 text-align: center;
                 padding: 0.2rem 1.8rem;
                 width: 100%;
-                font-size: 1.8rem;
                 background-image: linear-gradient(
                     90deg,
                     transparent 0%,
