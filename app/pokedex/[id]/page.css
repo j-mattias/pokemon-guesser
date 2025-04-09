@@ -1,0 +1,94 @@
+.pokemon-details-page {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    text-transform: capitalize;
+
+    & ul {
+        list-style: none;
+    }
+
+    & .pokemon-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        & .pokemon-type {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+
+            & .pokemon-name {
+                text-align: center;
+                padding: 0.2rem 1.8rem;
+                width: 100%;
+                background-image: linear-gradient(
+                    90deg,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.3),
+                    rgba(0, 0, 0, 0.3),
+                    transparent 100%
+                );
+            }
+
+            & .pokemon-type-list {
+                display: flex;
+                gap: 0.5rem;
+
+                & .pokemon-type-list__item {
+                    border-radius: 20px;
+                    padding: 6px 8px;
+                    min-width: 120px;
+                    font-size: 0.9rem;
+                    border: 3px solid var(--poke-light);
+                    text-align: center;
+                    background-image: linear-gradient(
+                        105deg,
+                        transparent 20%,
+                        rgba(0, 0, 0, 0.25) 21%,
+                        rgba(0, 0, 0, 0.5) 80%,
+                        transparent 81%
+                    );
+                }
+            }
+        }
+    }
+
+    & .details-wrapper {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+
+        & .pokemon-stats,
+        & .pokemon-abilities {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        & .pokemon-abilities > .pokemon-abilities-list > *,
+        & .pokemon-stats > .pokemon-stats-list > * {
+            padding: 0.5rem;
+            border-radius: 4px;
+
+            &:nth-child(odd) {
+                background-color: rgba(0, 0, 0, 0.25);
+            }
+        }
+
+        & .pokemon-stats {
+            & .pokemon-stats-list {
+                & .pokemon-stats-list__item {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+}

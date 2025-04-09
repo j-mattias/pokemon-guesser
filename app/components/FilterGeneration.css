@@ -1,0 +1,23 @@
+#filter-generations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem;
+    margin-inline: auto;
+
+    & input[type="radio"]:checked + .filter-generations__label {
+        background-color: var(--poke-red);
+    }
+
+    & .filter-generations__label {
+        background-color: var(--faded-gray);
+        border-radius: 20px;
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+
+        &:hover {
+            filter: brightness(0.9);
+        }
+    }
+}

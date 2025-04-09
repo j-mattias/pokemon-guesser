@@ -2,6 +2,7 @@
     --background: #171717;
     --foreground: #ffffff;
     --primary-shadow: rgba(0, 0, 0, 0.4);
+    --faded-gray: rgba(70, 70, 70, 0.5);
 
     --poke-red: #ee1515;
     --poke-dark: #222224;
@@ -57,6 +58,10 @@ a {
     }
 }
 
+img {
+    height: 100%;
+}
+
 button {
     padding: 0.6rem 1rem;
     border-radius: var(--b-radius);
@@ -78,7 +83,8 @@ button {
 
 #page-wrapper {
     flex: 1;
-    width: var(--max-width);
+    max-width: var(--max-width);
+    width: 100%;
     margin: 0 auto;
     background-color: var(--poke-dark);
     box-shadow: 10px 0 5px -2px var(--primary-shadow), -10px 0 5px -2px var(--primary-shadow);

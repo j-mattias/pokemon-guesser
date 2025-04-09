@@ -1,0 +1,13 @@
+#pokedex-page {
+    & .pokedex-page__title {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    & .pokemon-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+        padding: 1rem;
+    }
+}

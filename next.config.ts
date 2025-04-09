@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
                 pathname: "/HybridShivam/Pokemon/master/assets/images/*",
                 search: "",
             },
+            {
+                protocol: "https",
+                hostname: "raw.githubusercontent.com",
+                port: "",
+                pathname: "/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/*",
+                search: "",
+            },
         ],
     },
 };
