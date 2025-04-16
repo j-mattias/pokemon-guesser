@@ -1,12 +1,15 @@
+import { Metadata } from "next";
+
 import { GameClient } from "pokenode-ts";
+
 import GuessGame from "./GuessGame";
 
 import "./page.css";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Who's that pokemon?",
-}
+    title: "Guess Game",
+    description: "Guess Pokemon based on their silhouette",
+};
 
 export default async function GuessPage() {
 

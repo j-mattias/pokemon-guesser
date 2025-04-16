@@ -15,7 +15,7 @@ export const metadata: Metadata = {
         default: "Pokemon Guesser",
         template: "%s | Pokemon Guesser",
     },
-    description: "Guess pokemon based on their silhouette",
+    description: "Play a Pokemon guessing game or browse Pokemon",
 };
 
 export default function RootLayout({

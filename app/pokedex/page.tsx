@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Metadata } from "next";
+
 import { MainClient } from "pokenode-ts";
 
 import ListGlowItemBorders from "../components/ListGlowItemBorders";
@@ -10,6 +12,11 @@ import { addIdsToPokemonList } from "@/utils/helpers";
 import { IPokemonBasic } from "@/utils/interfaces";
 
 import "./page.css";
+
+export const metadata: Metadata = {
+    title: "Pokedex",
+    description: "Browse all Pokemon or by specific generation",
+};
 
 const LIMIT = 40;
 const POKEMON_MAX_COUNT = 1025;
