@@ -75,7 +75,7 @@ export default function GuessGame({ generations }: IGuessGame) {
         setIsGameOver(false);
         setScore(0);
         setPrevPokemonId(new Set());
-        // setNext(!next);
+        setNext(!next);
         setIsGameActive(false);
     };
 
