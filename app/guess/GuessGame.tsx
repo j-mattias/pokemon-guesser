@@ -4,7 +4,7 @@ import { MainClient, NamedAPIResourceList, Generation } from "pokenode-ts";
 
 import { useEffect, useState } from "react";
 
-import { randomizeNumber } from "@/utils/helpers";
+import { extractPokemonId, padStartId, randomizeNumber } from "@/utils/helpers";
 
 import GuessForm from "./GuessForm";
 import GameSettings from "./GameSettings";
@@ -131,9 +131,9 @@ export default function GuessGame({ generations }: IGuessGame) {
         // Get the start and end of the generation
         // The first pokemon in the list is the first id in the generation
         // But the last pokemon has to be calculated based on the total as it's not sorted
-        const idRegex = /(\d+)\/$/;
-        const start =
-            Number(generation?.pokemon_species[0].url.match(idRegex)?.[1]) || DEFAULT_GEN_NUM;
+        const start = generation
+            ? extractPokemonId(generation.pokemon_species[0].url)
+            : DEFAULT_GEN_NUM;
         const genTotalNum = generation?.pokemon_species.length || GEN_ONE_TOTAL;
         setGenTotal(genTotalNum);
         const end = genTotalNum - 1 + start;
@@ -159,7 +159,7 @@ export default function GuessGame({ generations }: IGuessGame) {
                 console.log("fetched pokemon: ", pokemon.name);
 
                 // Convert the pokemon id to a 3 digit string, compatible with the image url
-                const pokemonId = id.toString().padStart(3, "0");
+                const pokemonId = padStartId(id);
                 setPokemonId(pokemonId);
 
                 setIsPokemonLoading(false);
