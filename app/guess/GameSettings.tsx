@@ -8,6 +8,7 @@ interface IGameSettings {
     generationNum: number;
     handleSelectGeneration: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     handleSetIsGameActive: (bool: boolean) => void;
+    isGenLoading: boolean;
 }
 
 export default function GameSettings({
@@ -16,13 +17,14 @@ export default function GameSettings({
     generationNum,
     handleSelectGeneration,
     handleSetIsGameActive,
+    isGenLoading,
 }: IGameSettings) {
     // If the game is active, don't show game settings
     if (isGameActive) return null;
 
     return (
         <>
-            <div className="game-settings">
+            <form className="game-settings">
                 <label className="game-settings__label" htmlFor="generations">
                     Pick a generation
                 </label>
@@ -37,10 +39,10 @@ export default function GameSettings({
                         </option>
                     ))}
                 </select>
-                <button className="start-game" onClick={() => handleSetIsGameActive(true)}>
+                <button className="start-game" disabled={isGenLoading} onClick={() => handleSetIsGameActive(true)}>
                     Play
                 </button>
-            </div>
+            </form>
         </>
     );
 }

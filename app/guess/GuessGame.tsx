@@ -45,6 +45,7 @@ export default function GuessGame({ generations }: IGuessGame) {
         start: DEFAULT_GEN_NUM,
         end: GEN_ONE_TOTAL,
     });
+    const [isGenLoading, setIsGenLoading] = useState<boolean>(true);
 
     const pokeApi = new MainClient({ logs: true });
 
@@ -107,14 +108,18 @@ export default function GuessGame({ generations }: IGuessGame) {
 
     // Fetch the list of pokemon for the given generation
     useEffect(() => {
+        setIsGenLoading(true);
+
         const fetchGeneration = async (gen: number) => {
             try {
                 const genPokemon = await pokeApi.game.getGenerationById(gen);
                 console.log("Generation, ", genPokemon);
 
                 setGeneration(genPokemon);
+                setIsGenLoading(false);
             } catch (error) {
                 console.error(error);
+                setIsGenLoading(false);
             }
         };
         fetchGeneration(generationNum);
@@ -182,6 +187,7 @@ export default function GuessGame({ generations }: IGuessGame) {
                 handleSelectGeneration={handleSelectGeneration}
                 handleSetIsGameActive={handleSetIsGameActive}
                 generationNum={generationNum}
+                isGenLoading={isGenLoading}
             />
 
             {isGameActive && (
