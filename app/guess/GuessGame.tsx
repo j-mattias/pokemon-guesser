@@ -4,7 +4,7 @@ import { MainClient, NamedAPIResourceList, Generation } from "pokenode-ts";
 
 import { useEffect, useState } from "react";
 
-import { extractPokemonId, padStartId, randomizeNumber } from "@/utils/helpers";
+import { extractPokemonId, randomizeNumber } from "@/utils/helpers";
 
 import GuessForm from "./GuessForm";
 import GameSettings from "./GameSettings";
@@ -27,10 +27,9 @@ const DEFAULT_GEN_NUM = 1;
 
 export default function GuessGame({ generations }: IGuessGame) {
     // Pokemon state
-    const [pokemon, setPokemon] = useState<string>("");
-    const [pokemonId, setPokemonId] = useState<string>("");
+    const [pokemonName, setPokemonName] = useState<string>("");
     const [prevPokemonId, setPrevPokemonId] = useState<Set<number>>(new Set());
-    const [isPokemonLoading, setIsPokemonLoading] = useState<boolean>(true);
+    const [randomNum, setRandomNum] = useState<number>(1);
     // Game state
     const [score, setScore] = useState<number>(0);
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -52,11 +51,16 @@ export default function GuessGame({ generations }: IGuessGame) {
     // Check if game is won
     const isGameWon = score === genTotal;
 
+    // Set the pokemon name
+    const handleSetPokemon = (pokemonName: string) => {
+        setPokemonName(pokemonName);
+    }
+
     // Handle the guess
     const handleGuess = (guess: string) => {
         if (guess.trim() === "") return;
 
-        if (guess.toLowerCase().trim() === pokemon.toLowerCase()) {
+        if (guess.toLowerCase().trim() === pokemonName.toLowerCase()) {
             setScore((prevScore) => prevScore + 1);
         } else {
             setIsGameOver(true);
@@ -142,43 +146,22 @@ export default function GuessGame({ generations }: IGuessGame) {
         setGenerationRange((prevRange) => ({ ...prevRange, start, end }));
     }, [generation]);
 
-    // Fetch a random pokemon on first render and when the next button is clicked
+    // Randomize a number within the generation range. Used to fetch a pokemon in GameDisplay
     useEffect(() => {
         console.log("Ranges: ", generationRange);
         // Get a unique random number
         const randomNum = preventRepeat(generationRange.start, generationRange.end);
         console.log("Previous ids: ", prevPokemonId);
-
-        setIsPokemonLoading(true);
-
-        // Fetch a random pokemon by id
-        const fetchPokemon = async (id: number) => {
-            try {
-                const pokemon = await pokeApi.pokemon.getPokemonById(id);
-                setPokemon(pokemon.name);
-                console.log("fetched pokemon: ", pokemon.name);
-
-                // Convert the pokemon id to a 3 digit string, compatible with the image url
-                const pokemonId = padStartId(id);
-                setPokemonId(pokemonId);
-
-                setIsPokemonLoading(false);
-            } catch (error) {
-                console.error(error);
-                setIsPokemonLoading(false);
-            }
-        };
-        fetchPokemon(randomNum);
+        setRandomNum(randomNum);
     }, [next, generationRange]);
 
     return (
         <div className="guess-game-wrapper">
             <GameDisplay
-                pokemonId={pokemonId}
-                pokemon={pokemon}
-                isPokemonLoading={isPokemonLoading}
                 isRevealed={isRevealed}
                 isGameOver={isGameOver}
+                randomNum={randomNum}
+                handleSetPokemon={handleSetPokemon}
             />
 
             <GameSettings
