@@ -2,6 +2,7 @@ import { Metadata } from "next";
 
 import { GameClient } from "pokenode-ts";
 
+import { GuessGameContextProvider } from "../contexts/GuessGameContext";
 import GuessGame from "./GuessGame";
 
 import "./page.css";
@@ -21,7 +22,9 @@ export default async function GuessPage() {
     return (
         <main id="guess-page">
             <h1 className="guess-page__title">Pokemon Guesser</h1>
-            <GuessGame generations={generations} />
+            <GuessGameContextProvider>
+                <GuessGame generations={generations} />
+            </GuessGameContextProvider>
         </main>
     );
 }
