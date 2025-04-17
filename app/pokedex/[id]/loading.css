@@ -1,0 +1,109 @@
+.loading-details-page {
+    --placeholder: rgba(128, 128, 128, 0.5);
+
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    text-transform: capitalize;
+
+    & ul {
+        list-style: none;
+    }
+
+    & .pokemon-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        & .pokemon-type {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+
+            & .loading-name {
+                text-align: center;
+                padding: 0.2rem 1.8rem;
+                width: 100%;
+                height: 64px;
+            }
+
+            & .loading-type {
+                border-radius: 20px;
+                border: 3px solid var(--poke-light);
+                padding: 6px 8px;
+                height: 35px;
+                min-width: 120px;
+                background-color: var(--placeholder);
+            }
+        }
+
+        & .loading-image {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    & .details-wrapper {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+
+        & .loading-stats,
+        & .loading-abilities {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            & .loading-stats-title,
+            & .loading-abilities-title {
+                background-color: var(--placeholder);
+                height: 23px;
+                max-width: 9ch;
+            }
+        }
+
+        & .loading-abilities > .loading-abilities-list > *,
+        & .loading-stats > .loading-stats-list > * {
+            padding: 0.5rem;
+            min-height: 36px;
+
+            &:nth-child(odd) {
+                background-color: rgba(0, 0, 0, 0.25);
+            }
+        }
+    }
+}
+
+.gradient {
+    background: linear-gradient(
+        50deg,
+        transparent,
+        rgba(102, 102, 102, 0.6),
+        rgba(77, 77, 77, 0.658),
+        transparent
+    );
+    background-size: 400% 400%;
+    animation: gradient 5s ease infinite;
+    background-blend-mode: multiply;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
