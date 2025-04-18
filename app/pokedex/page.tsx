@@ -10,6 +10,7 @@ import Pagination from "../components/Pagination";
 import FilterGeneration from "../components/FilterGeneration";
 import { addIdsToPokemonList } from "@/utils/helpers";
 import { IPokemonBasic } from "@/utils/interfaces";
+import { POKEMON_MAX_COUNT } from "@/data/globalVariables";
 
 import "./page.css";
 
@@ -19,7 +20,6 @@ export const metadata: Metadata = {
 };
 
 const LIMIT = 40;
-const POKEMON_MAX_COUNT = 1025;
 
 export default async function PokedexPage({
     searchParams,

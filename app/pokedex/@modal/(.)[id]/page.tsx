@@ -1,9 +1,11 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 import { PokemonClient } from "pokenode-ts";
 
 import Modal from "@/app/components/Modal";
 import { getTypeColor, padStartId, replaceCharWithSpace } from "@/utils/helpers";
+import { POKEMON_MAX_COUNT } from "@/data/globalVariables";
 
 import "./page.css";
 
@@ -13,8 +15,15 @@ interface IPokedexModal {
 
 export default async function PokedexModal({ params }: IPokedexModal) {
     const { id } = await params;
+    const numId = parseInt(id);
+
+    // Trigger a notFound response if id is below 1 or above POKEMON_MAX_COUNT (1025)
+    if (numId < 1 || numId > POKEMON_MAX_COUNT) {
+        notFound();
+    }
+
     const pokeApi = new PokemonClient();
-    const pokemon = await pokeApi.getPokemonById(Number(id));
+    const pokemon = await pokeApi.getPokemonById(numId);
 
     const imageExists = pokemon.sprites.other?.["official-artwork"].front_default;
     const image = imageExists

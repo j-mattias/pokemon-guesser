@@ -1,0 +1,14 @@
+.not-found {
+    background-color: var(--poke-dark);
+    border-radius: var(--b-radius);
+
+    & .unown {
+        &.unown-f {
+            left: 0;
+        }
+
+        &.unown-qm {
+            right: 5%;
+        }
+    }
+}
