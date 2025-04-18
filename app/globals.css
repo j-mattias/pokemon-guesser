@@ -58,7 +58,7 @@ a {
     }
 }
 
-button {
+button, .link-btn {
     padding: 0.6rem 1rem;
     border-radius: var(--b-radius);
     border: none;
