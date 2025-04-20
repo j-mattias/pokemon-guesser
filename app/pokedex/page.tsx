@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { MainClient } from "pokenode-ts";
 
@@ -21,26 +22,58 @@ export const metadata: Metadata = {
 
 const LIMIT = 40;
 
+// Functions to group error handling with data fecthing
+const fetchGenerations = async (client: MainClient) => {
+    try {
+        const data = await client.game.listGenerations();
+        console.log("fetchGenerations: ", data);
+        return data;
+    } catch (error) {
+        throw new Error("Failed to fetch list of generations.");
+    }
+};
+
+const fetchGenerationById = async (client: MainClient, gen: number) => {
+    try {
+        const data = await client.game.getGenerationById(gen);
+        console.log("fetchGenerationById: ", data);
+        return data;
+    } catch (error) {
+        throw new Error(`Failed to fetch list of pokemon for generation: ${gen}.`);
+    }
+};
+
+const fetchPokemonList = async (client: MainClient, offset: number, limit: number) => {
+    try {
+        const data = await client.pokemon.listPokemons(offset, limit);
+        console.log("fetchPokemonList: ", data);
+        return data;
+    } catch (error) {
+        throw new Error(`Failed to fetch list of all pokemon.`);
+    }
+};
+
 export default async function PokedexPage({
     searchParams,
 }: {
     searchParams: Promise<{ page?: string; gen?: string }>;
 }) {
     const { page, gen } = await searchParams;
+    const pageNum = Number(page),
+        genNum = Number(gen);
 
     // Initialize pokemon client
     const pokemonApi = new MainClient();
 
     // Fetch list of pokemon generations for filter component
-    const pokemonGenerations = await pokemonApi.game.listGenerations();
-    console.log(pokemonGenerations);
+    const pokemonGenerations = await fetchGenerations(pokemonApi);
 
-    const currentPage = Number(page) || 1;
+    const currentPage = pageNum || 1;
     console.log("searchParams: ", page);
 
     // Calculate the offset for fetching pokemon
     let offset: number = (currentPage - 1) * LIMIT || 0;
-    console.log("offset", offset);
+    console.log("offset: ", offset);
 
     // Initialize a list to store pokemon data and pages for pagination
     let pokemonList: IPokemonBasic[] = [];
@@ -48,9 +81,8 @@ export default async function PokedexPage({
 
     // If there's a generation searchParam, fetch pokemon list by generation id
     // Otherwise fetch a paginated list of all pokemon
-    if (gen && Number(gen) <= pokemonGenerations.count) {
-        const data = await pokemonApi.game.getGenerationById(Number(gen));
-        console.log("fetch genById: ", data);
+    if (gen && genNum <= pokemonGenerations.count) {
+        const data = await fetchGenerationById(pokemonApi, genNum);
 
         // Calculate the end for pagination, as the whole list of pokemon
         // gets fetched for generations
@@ -77,7 +109,7 @@ export default async function PokedexPage({
             offset = POKEMON_MAX_COUNT - LIMIT;
         }
         // Fetch LIMIT pokemon at a time
-        const data = await pokemonApi.pokemon.listPokemons(offset, LIMIT);
+        const data = await fetchPokemonList(pokemonApi, offset, LIMIT);
 
         // Set the results to show for a specified page
         pokemonList = addIdsToPokemonList(data.results);
@@ -86,6 +118,15 @@ export default async function PokedexPage({
         // Calculate the amount of pages needed to display all pokemon
         // (with available images) in the list
         pages = Math.ceil(POKEMON_MAX_COUNT / LIMIT);
+    }
+
+    // Validate searchParams
+    if (gen && (genNum > pokemonGenerations.count || genNum < 1)) {
+        console.log("Not valid gen");
+        notFound();
+    } else if (page && (pageNum > pages || pageNum < 1)) {
+        console.log("Not a valid page");
+        notFound();
     }
 
     return (
