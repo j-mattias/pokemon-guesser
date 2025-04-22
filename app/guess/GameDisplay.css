@@ -27,11 +27,20 @@
         }
 
         & .game-display__loading,
-        & .game-display__pokemon-image {
+        & .game-display__pokemon-image,
+        & .game-display__error {
             grid-row: 1 / 1;
             grid-column: 1 / 1;
             color: var(--poke-dark);
             font-weight: bold;
+        }
+
+        & .game-display__error {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
         }
 
         & .game-display__pokemon-image {

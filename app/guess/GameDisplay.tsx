@@ -4,6 +4,7 @@ import { Pokemon } from "pokenode-ts";
 
 import Pokeball from "../components/Pokeball";
 
+import { TErrorState } from "../contexts/GuessGameContext";
 import { padStartId } from "@/utils/helpers";
 
 import "./GameDisplay.css";
@@ -15,6 +16,8 @@ interface IGameDisplay {
     isRevealed: boolean;
     isGameOver: boolean;
     isPokemonLoading: boolean;
+    pokemonFetchError: TErrorState;
+    handleRefetchPokemon: () => void;
 }
 
 export default function GameDisplay({
@@ -24,6 +27,8 @@ export default function GameDisplay({
     isRevealed,
     isGameOver,
     isPokemonLoading,
+    pokemonFetchError,
+    handleRefetchPokemon,
 }: IGameDisplay) {
     const computedGrayScale = isGameOver ? "grayscale" : "";
 
@@ -43,7 +48,7 @@ export default function GameDisplay({
                     width={700}
                     height={700}
                 />
-                {pokemonId && !isPokemonLoading ? (
+                {pokemonId && !isPokemonLoading && (
                     <Image
                         className={`game-display__pokemon-image ${isRevealed ? "revealed" : ""}`}
                         src={image}
@@ -51,8 +56,19 @@ export default function GameDisplay({
                         width={450}
                         height={450}
                     />
-                ) : (
+                )}
+
+                {isPokemonLoading && (
                     <Pokeball className="game-display__loading" loader={"shake"} />
+                )}
+
+                {!isPokemonLoading && pokemonFetchError && (
+                    <div className="game-display__error">
+                        <p>{pokemonFetchError}</p>
+                        <button className="retry-btn" onClick={handleRefetchPokemon}>
+                            Retry
+                        </button>
+                    </div>
                 )}
             </div>
             <figcaption className={`game-display__answer`}>
