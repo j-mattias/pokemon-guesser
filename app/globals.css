@@ -77,6 +77,11 @@ button,
         filter: brightness(0.9);
         scale: 1.05;
     }
+
+    &:disabled {
+        background-color: gray;
+        cursor: not-allowed;
+    }
 }
 
 #page-wrapper {
