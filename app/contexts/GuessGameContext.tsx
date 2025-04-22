@@ -178,12 +178,19 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
 
     // Update generation range
     useEffect(() => {
+        // Extract ids into an array to check what the smallest id is
+        const extractedIds = generation?.pokemon_species.map((pokemon) =>
+            extractPokemonId(pokemon.url)
+        );
+        // Find the smallest id in the array
+        const firstId = extractedIds?.reduce(
+            (min, current) => (min < current ? min : current),
+            Infinity
+        );
+        console.log("smallest id: ", firstId);
+        
         // Get the start and end of the generation
-        // The first pokemon in the list is the first id in the generation
-        // But the last pokemon has to be calculated based on the total as it's not sorted
-        const start = generation
-            ? extractPokemonId(generation.pokemon_species[0].url)
-            : DEFAULT_GEN_NUM;
+        const start = firstId ? firstId : DEFAULT_GEN_NUM;
         const genTotalNum = generation?.pokemon_species.length || GEN_ONE_TOTAL;
         setGenTotal(genTotalNum);
         const end = genTotalNum - 1 + start;
