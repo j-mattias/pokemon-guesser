@@ -9,11 +9,11 @@ import "./ErrorPage.css";
 interface IErrorPage {
     error: Error | string;
     backElement?: JSX.Element;
+    reset?: () => void;
 }
 
-export default function ErrorPage({ error, backElement }: IErrorPage) {
+export default function ErrorPage({ error, backElement, reset }: IErrorPage) {
     console.log(error);
-
     const errorMsg = typeof error === "object" ? error.message : error;
 
     return (
@@ -21,7 +21,10 @@ export default function ErrorPage({ error, backElement }: IErrorPage) {
             <div className="wrapper">
                 <h1 className="error-page__title">ERROR</h1>
                 <h2 className="error-page__subtitle">{errorMsg}</h2>
-                {backElement}
+                <div className="error-page__btn-wrapper">
+                    {backElement}
+                    {reset && <button onClick={reset}>Retry</button>}
+                </div>
             </div>
             <Image
                 className="pikachu"

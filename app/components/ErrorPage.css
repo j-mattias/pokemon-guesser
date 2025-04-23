@@ -36,5 +36,10 @@
             text-wrap: balance;
             text-align: center;
         }
+
+        & .error-page__btn-wrapper {
+            display: flex;
+            gap: 1rem;
+        }
     }
 }
