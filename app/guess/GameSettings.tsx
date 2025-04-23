@@ -40,7 +40,7 @@ export default function GameSettings({
                     ))}
                 </select>
                 <button className="start-game" disabled={isGenLoading} onClick={() => handleSetIsGameActive(true)}>
-                    Play
+                    {isGenLoading ? "Loading..." : "Play"}
                 </button>
             </form>
         </>

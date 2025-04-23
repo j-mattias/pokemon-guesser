@@ -8,6 +8,7 @@ import "./globals.css";
 const inter = Inter({
     variable: "--font-inter",
     subsets: ["latin"],
+    fallback: ["Arial", "Helvetica", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -26,10 +27,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${inter.variable}`}>
-                <Navbar/>
-                <div id="page-wrapper">
-                    {children}
-                </div>
+                <Navbar />
+                <div id="page-wrapper">{children}</div>
             </body>
         </html>
     );

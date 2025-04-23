@@ -1,0 +1,45 @@
+.error-page {
+    display: grid;
+    grid-template-areas: "error img";
+    align-items: center;
+    position: relative;
+    padding-top: 4rem;
+
+    & .pikachu {
+        grid-area: img;
+        justify-self: flex-end;
+    }
+
+    & .wrapper {
+        grid-area: error;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+
+        & .error-page__title {
+            font-size: 8rem;
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(80, 0, 0, 0.2),
+                rgba(80, 0, 0, 0.2) 30px,
+                rgba(255, 0, 0, 0.2) 30px,
+                rgba(255, 0, 0, 0.2) 60px
+            );
+            padding-inline: 1rem;
+        }
+
+        & .error-page__subtitle {
+            color: gray;
+            font-weight: 400;
+            text-wrap: balance;
+            text-align: center;
+        }
+
+        & .error-page__btn-wrapper {
+            display: flex;
+            gap: 1rem;
+        }
+    }
+}

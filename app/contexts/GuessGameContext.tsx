@@ -15,6 +15,8 @@ interface IGenRange {
     end: number;
 }
 
+export type TErrorState = string | null;
+
 interface IGuessGameContext {
     // Pokemon state
     pokemon: Pokemon | undefined;
@@ -39,12 +41,17 @@ interface IGuessGameContext {
     isGenLoading: boolean;
     isPokemonLoading: boolean;
 
+    // Error state
+    pokemonFetchError: TErrorState;
+    generationFetchError: TErrorState;
+
     // Handlers
     handleSelectGeneration: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     handleSetIsGameActive: (bool: boolean) => void;
     handleRetry: () => void;
     handleNext: () => void;
     handleGuess: (guess: string) => void;
+    handleRefetchPokemon: () => void;
 }
 
 const GEN_ONE_TOTAL = 151;
@@ -77,11 +84,20 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     // Loading state
     const [isPokemonLoading, setIsPokemonLoading] = useState<boolean>(true);
     const [isGenLoading, setIsGenLoading] = useState<boolean>(true);
+    // Error state
+    const [pokemonFetchError, setPokemonFetchError] = useState<TErrorState>(null);
+    const [pokemonRefetch, setPokemonRefetch] = useState<boolean>(false);
+    const [generationFetchError, setGenerationFetchError] = useState<TErrorState>(null);
 
     const pokeApi = new MainClient({ logs: true });
 
     // Check if game is won
     const isGameWon = score === genTotal;
+
+    // Attempt to fetch pokemon again
+    const handleRefetchPokemon = () => {
+        setPokemonRefetch((prevPR) => !prevPR);
+    };
 
     // Handle the guess
     const handleGuess = (guess: string) => {
@@ -151,24 +167,34 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 setIsGenLoading(false);
             } catch (error) {
                 console.error(error);
+                setGenerationFetchError(
+                    `Failed to load game data. Try refreshing or come back later.`
+                );
                 setIsGenLoading(false);
             }
         };
         fetchGeneration(generationNum);
     }, [generationNum]);
-    
+
     // Update generation range
     useEffect(() => {
+        // Extract ids into an array to check what the smallest id is
+        const extractedIds = generation?.pokemon_species.map((pokemon) =>
+            extractPokemonId(pokemon.url)
+        );
+        // Find the smallest id in the array
+        const firstId = extractedIds?.reduce(
+            (min, current) => (min < current ? min : current),
+            Infinity
+        );
+        console.log("smallest id: ", firstId);
+        
         // Get the start and end of the generation
-        // The first pokemon in the list is the first id in the generation
-        // But the last pokemon has to be calculated based on the total as it's not sorted
-        const start = generation
-        ? extractPokemonId(generation.pokemon_species[0].url)
-        : DEFAULT_GEN_NUM;
+        const start = firstId ? firstId : DEFAULT_GEN_NUM;
         const genTotalNum = generation?.pokemon_species.length || GEN_ONE_TOTAL;
         setGenTotal(genTotalNum);
         const end = genTotalNum - 1 + start;
-        
+
         console.log("Gen range: ", start, end);
         setGenerationRange((prevRange) => ({ ...prevRange, start, end }));
     }, [generation]);
@@ -200,14 +226,19 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 // Set the pokemon name, for checking correct guess
                 setPokemonName(pokemon.name);
 
+                setPokemonFetchError(null);
                 setIsPokemonLoading(false);
             } catch (error) {
                 console.error(error);
+                setPokemonFetchError(`Failed to fetch pokemon with id: ${id}.`);
                 setIsPokemonLoading(false);
             }
         };
+
         fetchPokemon(randomNum);
-    }, [randomNum]);
+        // The pokemonRefetch dependency allows the user to attempt to fetch the pokemon
+        // again if there was an error during the game
+    }, [randomNum, pokemonRefetch]);
 
     return (
         <GuessGameContext
@@ -225,11 +256,14 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 generationNum,
                 isGenLoading,
                 isPokemonLoading,
+                pokemonFetchError,
+                generationFetchError,
                 handleSelectGeneration,
                 handleSetIsGameActive,
                 handleRetry,
                 handleNext,
                 handleGuess,
+                handleRefetchPokemon,
                 randomNum,
                 prevPokemonId,
             }}

@@ -41,3 +41,11 @@ export function getTypeColor(key: string) {
     }
     return "#7f7f7f";
 }
+
+// Validate integer value
+export function validateInt(num: number): boolean {
+    if (typeof num !== "number" || Number.isNaN(num) || !Number.isInteger(num)) {
+        return false;
+    }
+    return true;
+}

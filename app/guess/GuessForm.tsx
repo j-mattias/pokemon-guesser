@@ -13,13 +13,17 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
     const [guess, setGuess] = useState<string>("");
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-    
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const [isProcessing, setIsProcessing] = useState<boolean>(false);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // Prevent form being able to be submitted again while guess is being checked
+        setIsProcessing(true);
 
         // Process the guess
         handleGuess(guess);
         setGuess("");
+        setIsProcessing(false);
     };
 
     // Sets the filtered suggestion based on user input and the guess
@@ -59,6 +63,8 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
                     onChange={handleInput}
                     value={guess}
                     autoComplete="off"
+                    disabled={isProcessing}
+                    placeholder="Pokemon"
                 />
                 {filteredSuggestions.length > 0 && guess.trim().length > 0 && (
                     <ul className="suggestions">
@@ -74,8 +80,8 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
                     </ul>
                 )}
             </div>
-            <button className="submit-btn" type="submit">
-                Guess
+            <button className="submit-btn" disabled={isProcessing} type="submit">
+                {isProcessing ? "Checking..." : "Guess"}
             </button>
         </form>
     );

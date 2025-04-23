@@ -6,6 +6,7 @@ import GuessForm from "./GuessForm";
 import GameSettings from "./GameSettings";
 import GameDisplay from "./GameDisplay";
 import ScoreProgress from "./ScoreProgress";
+import ErrorPage from "../components/ErrorPage";
 import { useGuessGameContext } from "../contexts/GuessGameContext";
 
 import "./GuessGame.css";
@@ -35,13 +36,23 @@ export default function GuessGame({ generations }: IGuessGame) {
         // Loading state
         isGenLoading,
         isPokemonLoading,
+        // Error state
+        pokemonFetchError,
+        generationFetchError,
         // Handlers
         handleSelectGeneration,
         handleSetIsGameActive,
         handleRetry,
         handleNext,
         handleGuess,
+        handleRefetchPokemon,
     } = useGuessGameContext();
+
+    // If genertaion fetch fails, game data can't be loaded properly, 
+    // show an error component instead
+    if (generationFetchError) {
+        return <ErrorPage error={generationFetchError} />;
+    }
 
     return (
         <div className="guess-game-wrapper">
@@ -52,6 +63,8 @@ export default function GuessGame({ generations }: IGuessGame) {
                 isRevealed={isRevealed}
                 isGameOver={isGameOver}
                 isPokemonLoading={isPokemonLoading}
+                pokemonFetchError={pokemonFetchError}
+                handleRefetchPokemon={handleRefetchPokemon}
             />
 
             <GameSettings

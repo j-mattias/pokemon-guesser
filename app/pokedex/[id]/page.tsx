@@ -1,8 +1,9 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
-import { PokemonClient } from "pokenode-ts";
-
-import { getTypeColor, padStartId, replaceCharWithSpace } from "@/utils/helpers";
+import { getTypeColor, padStartId, replaceCharWithSpace, validateInt } from "@/utils/helpers";
+import { POKEMON_MAX_COUNT } from "@/data/globalVariables";
+import { fetchPokemonById } from "@/utils/dataFetching";
 
 import "./page.css";
 
@@ -12,8 +13,18 @@ interface IPokemonDetailsPage {
 
 export default async function PokemonDetailsPage({ params }: IPokemonDetailsPage) {
     const { id } = await params;
-    const pokeApi = new PokemonClient();
-    const pokemon = await pokeApi.getPokemonById(Number(id));
+    const numId = Number(id);
+
+    if (!validateInt(numId)) {
+        throw new Error(`"${id}" is not a valid pokemon id.`);
+    }
+
+    // Trigger a notFound response if id is below 1 or above POKEMON_MAX_COUNT (1025)
+    if (numId < 1 || numId > POKEMON_MAX_COUNT) {
+        notFound();
+    }
+
+    const pokemon = await fetchPokemonById(numId);
 
     const imageExists = pokemon.sprites.other?.["official-artwork"].front_default;
     const image = imageExists
