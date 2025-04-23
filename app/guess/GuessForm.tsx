@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Generation } from "pokenode-ts";
+import Select, { SingleValue } from "react-select";
 import "./GuessForm.css";
 
 interface IGuessForm {
@@ -9,10 +10,14 @@ interface IGuessForm {
     generation: Generation | undefined;
 }
 
+interface ISelectOption {
+    value: string;
+    label: string;
+}
+
 export default function GuessForm({ handleGuess, generation }: IGuessForm) {
     const [guess, setGuess] = useState<string>("");
-    const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+    const [options, setOptions] = useState<ISelectOption[]>([]);
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,60 +31,58 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
         setIsProcessing(false);
     };
 
-    // Sets the filtered suggestion based on user input and the guess
-    const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const input = e.target.value.toLowerCase();
-
-        const filtered = suggestions
-            .filter((suggestion) => suggestion.toLowerCase().includes(input))
-            .sort((a, b) => a.localeCompare(b));
-        setFilteredSuggestions(filtered);
-        setGuess(input);
+    // Update the guess when Select option is changed
+    const handleChange = (e: SingleValue<ISelectOption>) => {
+        if (!e) {
+            // Have to clear guess because isClearable doesn't reset input itself
+            setGuess("");
+            return;
+        }
+        setGuess(e.value);
     };
 
-    // Sets the guess when a suggestion is clicked, and resets the suggestions
-    const handleSuggestionClick = (suggestion: string) => {
-        setGuess(suggestion);
-        setFilteredSuggestions([]);
-    };
-
-    // Extract the names of the pokemon into a list, to use for suggestions
+    // Extract the pokemon names into an options list for the Select component
     useEffect(() => {
         if (generation) {
-            const nameSuggestions = generation.pokemon_species.map((pokemon) => pokemon.name);
-            setSuggestions(nameSuggestions);
-            console.log("suggestions: ", nameSuggestions);
+            const options = generation.pokemon_species.map((pokemon) => {
+                return { value: pokemon.name, label: pokemon.name };
+            });
+            setOptions(options);
+            console.log("options: ", options);
         }
     }, [generation]);
 
     return (
         <form onSubmit={handleSubmit} className="guess-form">
-            <label htmlFor="guess-input">Who's that Pokemon?</label>
-            <div className="input-wrapper">
-                <input
-                    type="text"
-                    id="guess-input"
-                    name="guess-input"
-                    onChange={handleInput}
-                    value={guess}
-                    autoComplete="off"
-                    disabled={isProcessing}
-                    placeholder="Pokemon"
-                />
-                {filteredSuggestions.length > 0 && guess.trim().length > 0 && (
-                    <ul className="suggestions">
-                        {filteredSuggestions.map((suggestion) => (
-                            <li
-                                className={`suggestions__item`}
-                                onClick={handleSuggestionClick.bind(null, suggestion)}
-                                key={suggestion}
-                            >
-                                {suggestion}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+            <h2 className="guess-form__title">Who's that Pokemon?</h2>
+            <Select
+                options={options}
+                placeholder="Pokemon"
+                id="guess-input"
+                onChange={handleChange}
+                isClearable={true}
+                isDisabled={isProcessing}
+                styles={{
+                    control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        border: "none",
+                        minWidth: "20ch",
+                        textTransform: "capitalize",
+                    }),
+                    valueContainer: (baseStyles, state) => ({
+                        ...baseStyles,
+                        paddingLeft: "1rem",
+                        ":hover": {
+                            cursor: "text",
+                        },
+                    }),
+                    option: (baseStyles, state) => ({
+                        ...baseStyles,
+                        textTransform: "capitalize",
+                        color: "var(--poke-dark)",
+                    }),
+                }}
+            />
             <button className="submit-btn" disabled={isProcessing} type="submit">
                 {isProcessing ? "Checking..." : "Guess"}
             </button>

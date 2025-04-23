@@ -14,7 +14,8 @@
     "next": "15.2.3",
     "pokenode-ts": "^1.20.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-select": "^5.10.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
