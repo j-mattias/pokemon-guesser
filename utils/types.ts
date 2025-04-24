@@ -1,3 +1,6 @@
+import { SingleValue } from "react-select";
+import { ISelectSingle } from "./interfaces";
+
 export type TypeColorKeys =
     | "normal"
     | "fire"
@@ -20,3 +23,5 @@ export type TypeColorKeys =
     | "stellar"
     | "unknown"
     | "shadow";
+
+export type TSingleValue = SingleValue<ISelectSingle>;

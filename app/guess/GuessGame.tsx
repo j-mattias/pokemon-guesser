@@ -31,7 +31,6 @@ export default function GuessGame({ generations }: IGuessGame) {
         genTotal,
         generationName,
         // Game settings
-        generationNum,
         generation,
         // Loading state
         isGenLoading,
@@ -68,11 +67,10 @@ export default function GuessGame({ generations }: IGuessGame) {
             />
 
             <GameSettings
-                generations={generations}
+                generations={generations.results}
                 isGameActive={isGameActive}
                 handleSelectGeneration={handleSelectGeneration}
                 handleSetIsGameActive={handleSetIsGameActive}
-                generationNum={generationNum}
                 isGenLoading={isGenLoading}
             />
 

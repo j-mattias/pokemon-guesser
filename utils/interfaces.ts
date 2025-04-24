@@ -4,3 +4,8 @@ export interface IPokemonBasic {
     id: number;
     paddedId: string;
 }
+
+export interface ISelectSingle {
+    value: number;
+    label: string;
+}
