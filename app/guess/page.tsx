@@ -1,9 +1,8 @@
 import { Metadata } from "next";
 
-import { GameClient } from "pokenode-ts";
-
 import { GuessGameContextProvider } from "../contexts/GuessGameContext";
 import GuessGame from "./GuessGame";
+import { fetchGenerations } from "@/utils/dataFetching";
 
 import "./page.css";
 
@@ -13,11 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GuessPage() {
-
-    const genApi = new GameClient();
-
-    const generations = await genApi.listGenerations();
-    console.log("generations:", generations)
+    const generations = await fetchGenerations();
 
     return (
         <main id="guess-page">
