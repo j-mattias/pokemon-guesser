@@ -5,6 +5,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { Generation, MainClient, Pokemon } from "pokenode-ts";
 
 import { extractPokemonId, padStartId, randomizeNumber } from "@/utils/helpers";
+import { TSingleValue } from "@/utils/types";
 
 interface IGuessGameProvider {
     children: ReactNode;
@@ -46,7 +47,7 @@ interface IGuessGameContext {
     generationFetchError: TErrorState;
 
     // Handlers
-    handleSelectGeneration: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    handleSelectGeneration: (option: TSingleValue) => void;
     handleSetIsGameActive: (bool: boolean) => void;
     handleRetry: () => void;
     handleNext: () => void;
@@ -126,9 +127,12 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         setIsGameActive(false);
     };
 
-    const handleSelectGeneration = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setGenerationNum(+e.target.value);
-        handleRetry();
+    // Set the generation
+    const handleSelectGeneration = (option: TSingleValue) => {
+        if (option) {
+            setGenerationNum(option.value);
+            handleRetry();
+        }
     };
 
     const handleSetIsGameActive = (bool: boolean) => {

@@ -2,10 +2,10 @@
 
 import { NamedAPIResourceList } from "pokenode-ts";
 
-import GuessForm from "./GuessForm";
 import GameSettings from "./GameSettings";
 import GameDisplay from "./GameDisplay";
 import ScoreProgress from "./ScoreProgress";
+import GameControls from "./GameControls";
 import ErrorPage from "../components/ErrorPage";
 import { useGuessGameContext } from "../contexts/GuessGameContext";
 
@@ -27,12 +27,8 @@ export default function GuessGame({ generations }: IGuessGame) {
         isGameOver,
         isRevealed,
         isGameActive,
-        isGameWon,
         genTotal,
         generationName,
-        // Game settings
-        generationNum,
-        generation,
         // Loading state
         isGenLoading,
         isPokemonLoading,
@@ -42,13 +38,10 @@ export default function GuessGame({ generations }: IGuessGame) {
         // Handlers
         handleSelectGeneration,
         handleSetIsGameActive,
-        handleRetry,
-        handleNext,
-        handleGuess,
         handleRefetchPokemon,
     } = useGuessGameContext();
 
-    // If genertaion fetch fails, game data can't be loaded properly, 
+    // If genertaion fetch fails, game data can't be loaded properly,
     // show an error component instead
     if (generationFetchError) {
         return <ErrorPage error={generationFetchError} />;
@@ -68,11 +61,10 @@ export default function GuessGame({ generations }: IGuessGame) {
             />
 
             <GameSettings
-                generations={generations}
+                generations={generations.results}
                 isGameActive={isGameActive}
                 handleSelectGeneration={handleSelectGeneration}
                 handleSetIsGameActive={handleSetIsGameActive}
-                generationNum={generationNum}
                 isGenLoading={isGenLoading}
             />
 
@@ -84,27 +76,11 @@ export default function GuessGame({ generations }: IGuessGame) {
                         generationName={generationName}
                     />
 
-                    <div className={`game-controls`}>
-                        {isGameWon ? (
-                            <>
-                                <h2>{`Well done! You cleared ${generationName.toUpperCase()}.`}</h2>
-                                <button onClick={handleRetry}>Play again?</button>
-                            </>
-                        ) : isGameOver ? (
-                            <>
-                                <h2>Game Over</h2>
-                                <button onClick={handleRetry}>Try again?</button>
-                            </>
-                        ) : (
-                            <>
-                                {isRevealed ? (
-                                    <button onClick={handleNext}>Next</button>
-                                ) : (
-                                    <GuessForm handleGuess={handleGuess} generation={generation} />
-                                )}
-                            </>
-                        )}
-                    </div>
+                    <GameControls
+                        generationName={generationName}
+                        isGameOver={isGameOver}
+                        isRevealed={isRevealed}
+                    />
                 </>
             )}
         </div>

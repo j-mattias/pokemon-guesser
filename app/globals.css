@@ -82,7 +82,13 @@ button,
         background-color: gray;
         cursor: not-allowed;
     }
+    
+    &:focus-visible {
+        outline: none;
+        border: 2px solid white;
+    }
 }
+
 
 #page-wrapper {
     flex: 1;

@@ -4,9 +4,8 @@
     gap: 1rem;
     padding: 1rem;
 
-    & .game-settings__label {
+    & .game-settings__title {
         font-size: 1.4rem;
-        font-weight: bold;
     }
 
     & #generations {
@@ -20,5 +19,11 @@
             background-color: gray;
             cursor: not-allowed;
         }
+    }
+
+    & .select-placeholder {
+        height: 38px;
+        background-color: gray;
+        border-radius: var(--b-radius);
     }
 }
