@@ -62,6 +62,7 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
                 onChange={handleChange}
                 isClearable={true}
                 isDisabled={isProcessing}
+                autoFocus={true}
                 styles={{
                     control: (baseStyles, state) => ({
                         ...baseStyles,
