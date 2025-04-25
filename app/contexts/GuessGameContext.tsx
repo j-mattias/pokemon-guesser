@@ -6,7 +6,6 @@ import {
     useCallback,
     useContext,
     useEffect,
-    useMemo,
     useState,
 } from "react";
 
@@ -66,6 +65,9 @@ interface IGuessGameContext {
 const GEN_ONE_TOTAL = 151;
 const DEFAULT_GEN_NUM = 1;
 
+// Initialize main pokemon client
+const POKE_API = new MainClient({ logs: true });
+
 const GuessGameContext = createContext<IGuessGameContext | null>(null);
 
 export function GuessGameContextProvider({ children }: IGuessGameProvider) {
@@ -97,8 +99,6 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     const [pokemonFetchError, setPokemonFetchError] = useState<TErrorState>(null);
     const [pokemonRefetch, setPokemonRefetch] = useState<boolean>(false);
     const [generationFetchError, setGenerationFetchError] = useState<TErrorState>(null);
-
-    const pokeApi = useMemo(() => new MainClient({ logs: true }), []);
 
     // Check if game is won
     const isGameWon = score === genTotal;
@@ -171,7 +171,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
 
         const fetchGeneration = async (gen: number) => {
             try {
-                const genPokemon = await pokeApi.game.getGenerationById(gen);
+                const genPokemon = await POKE_API.game.getGenerationById(gen);
                 console.log("Generation, ", genPokemon);
 
                 setGeneration(genPokemon);
@@ -220,8 +220,10 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     // Randomize a number within the generation range when next is updated. 
     // Triggers a pokemon fetch
     useEffect(() => {
+        const { start, end } = generationRange;
+
         // Get a unique random number
-        const randomNum = preventRepeat(generationRange.start, generationRange.end);
+        const randomNum = preventRepeat(start, end);
         setRandomNum(randomNum);
     }, [next]);
 
@@ -232,7 +234,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         // Fetch a random pokemon by id
         const fetchPokemon = async (id: number) => {
             try {
-                const pokemon = await pokeApi.pokemon.getPokemonById(id);
+                const pokemon = await POKE_API.pokemon.getPokemonById(id);
                 setPokemon(pokemon);
                 console.log("fetched pokemon: ", pokemon.name);
 
