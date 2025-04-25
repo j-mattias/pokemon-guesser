@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 
 import { Generation, MainClient, Pokemon } from "pokenode-ts";
 
@@ -90,7 +98,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     const [pokemonRefetch, setPokemonRefetch] = useState<boolean>(false);
     const [generationFetchError, setGenerationFetchError] = useState<TErrorState>(null);
 
-    const pokeApi = new MainClient({ logs: true });
+    const pokeApi = useMemo(() => new MainClient({ logs: true }), []);
 
     // Check if game is won
     const isGameWon = score === genTotal;
@@ -131,7 +139,6 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     const handleSelectGeneration = (option: TSingleValue) => {
         if (option) {
             setGenerationNum(option.value);
-            handleRetry();
         }
     };
 
@@ -141,7 +148,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     };
 
     // Prevents the same pokemon from being displayed twice during a game
-    const preventRepeat = (start: number, end: number): number => {
+    const preventRepeat = useCallback((start: number, end: number): number => {
         let randomNum: number;
 
         // If an id has already been used, keep randomizing until a unique one is found
@@ -156,7 +163,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
             return newSet;
         });
         return randomNum;
-    };
+    }, [prevPokemonId]);
 
     // Fetch the list of pokemon for the given generation
     useEffect(() => {
@@ -192,25 +199,31 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
             Infinity
         );
         console.log("smallest id: ", firstId);
-        
+
         // Get the start and end of the generation
         const start = firstId ? firstId : DEFAULT_GEN_NUM;
         const genTotalNum = generation?.pokemon_species.length || GEN_ONE_TOTAL;
-        setGenTotal(genTotalNum);
         const end = genTotalNum - 1 + start;
 
+        // Set genTotal, generationRange and clear prevPokemonId
+        setGenTotal(genTotalNum);
+        setGenerationRange({ start, end });
+        setPrevPokemonId(new Set());
         console.log("Gen range: ", start, end);
-        setGenerationRange((prevRange) => ({ ...prevRange, start, end }));
+
+        // Randomize a number in the given range
+        // Triggers a pokemon fetch
+        const randomNum = preventRepeat(start, end);
+        setRandomNum(randomNum);
     }, [generation]);
 
-    // Randomize a number within the generation range. Used to fetch a pokemon in GameDisplay
+    // Randomize a number within the generation range when next is updated. 
+    // Triggers a pokemon fetch
     useEffect(() => {
-        console.log("Ranges: ", generationRange);
         // Get a unique random number
         const randomNum = preventRepeat(generationRange.start, generationRange.end);
-        console.log("Previous ids: ", prevPokemonId);
         setRandomNum(randomNum);
-    }, [next, generationRange]);
+    }, [next]);
 
     // Fetch pokemon based on random number
     useEffect(() => {
@@ -238,8 +251,9 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 setIsPokemonLoading(false);
             }
         };
-
         fetchPokemon(randomNum);
+        console.log("randomNum: ", randomNum);
+        console.log("Previous ids: ", prevPokemonId);
         // The pokemonRefetch dependency allows the user to attempt to fetch the pokemon
         // again if there was an error during the game
     }, [randomNum, pokemonRefetch]);

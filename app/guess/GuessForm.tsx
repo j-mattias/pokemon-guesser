@@ -54,7 +54,7 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
 
     return (
         <form onSubmit={handleSubmit} className="guess-form">
-            <h2 className="guess-form__title">Who's that Pokemon?</h2>
+            <h2 className="guess-form__title">{`Who's that Pokemon?`}</h2>
             <Select
                 options={options}
                 placeholder="Pokemon"
@@ -64,20 +64,20 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
                 isDisabled={isProcessing}
                 autoFocus={true}
                 styles={{
-                    control: (baseStyles, state) => ({
+                    control: (baseStyles) => ({
                         ...baseStyles,
                         border: "none",
                         minWidth: "20ch",
                         textTransform: "capitalize",
                     }),
-                    valueContainer: (baseStyles, state) => ({
+                    valueContainer: (baseStyles) => ({
                         ...baseStyles,
                         paddingLeft: "1rem",
                         ":hover": {
                             cursor: "text",
                         },
                     }),
-                    option: (baseStyles, state) => ({
+                    option: (baseStyles) => ({
                         ...baseStyles,
                         textTransform: "capitalize",
                         color: "var(--poke-dark)",

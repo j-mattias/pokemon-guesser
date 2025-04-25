@@ -73,7 +73,7 @@ export interface IItemStyles {
  *   },
  * };
  */
-export default function ListGlowItemBorders<T extends Record<string, any>>({
+function ListGlowItemBorders<T extends object>({
     list,
     cardComponent: CardComponent,
     className,
@@ -176,7 +176,7 @@ export default function ListGlowItemBorders<T extends Record<string, any>>({
                         mousePos={mousePos}
                         windowChange={windowChange}
                         itemClassName={itemClassName}
-                        key={item[uniqueKey]}
+                        key={item[uniqueKey as keyof T] as React.Key}
                     >
                         <CardComponent {...item} />
                     </ItemContainer>
@@ -185,6 +185,8 @@ export default function ListGlowItemBorders<T extends Record<string, any>>({
         </div>
     );
 }
+
+export default ListGlowItemBorders;
 
 function ItemContainer({
     mousePos,

@@ -52,15 +52,15 @@ export default function GameSettings({
                         isSearchable={false}
                         isDisabled={isGenLoading}
                         styles={{
-                            control: (baseStyles, state) => ({
+                            control: (baseStyles) => ({
                                 ...baseStyles,
                                 border: "none",
                             }),
-                            valueContainer: (baseStyles, state) => ({
+                            valueContainer: (baseStyles) => ({
                                 ...baseStyles,
                                 textTransform: "uppercase",
                             }),
-                            option: (baseStyles, state) => ({
+                            option: (baseStyles) => ({
                                 ...baseStyles,
                                 textTransform: "uppercase",
                                 color: "var(--poke-dark)",
