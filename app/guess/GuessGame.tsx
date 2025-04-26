@@ -29,6 +29,7 @@ export default function GuessGame({ generations }: IGuessGame) {
         isGameActive,
         genTotal,
         generationName,
+        generationNum,
         // Loading state
         isGenLoading,
         isPokemonLoading,
@@ -66,6 +67,7 @@ export default function GuessGame({ generations }: IGuessGame) {
                 handleSelectGeneration={handleSelectGeneration}
                 handleSetIsGameActive={handleSetIsGameActive}
                 isGenLoading={isGenLoading}
+                generationNum={generationNum}
             />
 
             {isGameActive && (

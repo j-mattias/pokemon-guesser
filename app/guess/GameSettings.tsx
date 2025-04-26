@@ -11,6 +11,7 @@ import "./GameSettings.css";
 
 interface IGameSettings {
     isGameActive: boolean;
+    generationNum: number;
     generations: NamedAPIResource[];
     handleSelectGeneration: (option: TSingleValue) => void;
     handleSetIsGameActive: (bool: boolean) => void;
@@ -20,6 +21,7 @@ interface IGameSettings {
 export default function GameSettings({
     isGameActive,
     generations,
+    generationNum,
     handleSelectGeneration,
     handleSetIsGameActive,
     isGenLoading,
@@ -47,7 +49,7 @@ export default function GameSettings({
                 {isClient ? (
                     <Select
                         options={options}
-                        defaultValue={options[0]}
+                        defaultValue={options[generationNum - 1]}
                         onChange={handleSelectGeneration}
                         isSearchable={false}
                         isDisabled={isGenLoading}

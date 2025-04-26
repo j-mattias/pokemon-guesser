@@ -1,13 +1,6 @@
 "use client";
 
-import {
-    createContext,
-    ReactNode,
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect, useReducer, useState } from "react";
 
 import { Generation, MainClient, Pokemon } from "pokenode-ts";
 
@@ -29,7 +22,6 @@ interface IGuessGameContext {
     // Pokemon state
     pokemon: Pokemon | undefined;
     pokemonId: string;
-    prevPokemonId: Set<number>;
     randomNum: number;
 
     // Game state
@@ -62,8 +54,59 @@ interface IGuessGameContext {
     handleRefetchPokemon: () => void;
 }
 
+interface IState {
+    genRange: IGenRange;
+    randomNum: number;
+    prevPokemonIds: Set<number>;
+}
+
+type TAction = { type: "randomize"; clear: boolean } | { type: "genRange"; genRange: IGenRange };
+
 const GEN_ONE_TOTAL = 151;
 const DEFAULT_GEN_NUM = 1;
+const DEFAULT_POKEMON_ID = 1;
+
+const initialState = {
+    genRange: { start: DEFAULT_GEN_NUM, end: GEN_ONE_TOTAL },
+    randomNum: DEFAULT_POKEMON_ID,
+    prevPokemonIds: new Set<number>(),
+};
+
+// Reducer function for randomizing pokemonId based on generation range
+const pokemonIdReducer = (state: IState, action: TAction): IState => {
+    // Destructure state variables
+    const {
+        genRange: { start, end },
+        prevPokemonIds,
+    } = state;
+    
+    // Randomize a new pokemonId
+    if (action.type === "randomize") {
+        // Create a new set based on previous set to modify
+        const newSet = new Set(prevPokemonIds);
+        
+        if (action.clear) {
+            newSet.clear();
+        }
+        
+        // Randomize a number that's not in the set yet
+        let num: number;
+        do {
+            num = randomizeNumber(start, end);
+        } while (newSet.has(num));
+        newSet.add(num);
+        
+        console.log("prevPokemonIds: ", newSet)
+        return { ...state, randomNum: num, prevPokemonIds: newSet };
+    } else if (action.type === "genRange") {
+        // Update the generation range and randomize a new number based on new range
+        const newState = { ...state, genRange: action.genRange };
+
+        return pokemonIdReducer(newState, { type: "randomize", clear: true });
+    } else {
+        throw new Error("Unknown action in pokemonIdReducer.");
+    }
+};
 
 // Initialize main pokemon client
 const POKE_API = new MainClient({ logs: true });
@@ -75,8 +118,6 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     const [pokemon, setPokemon] = useState<Pokemon | undefined>(undefined);
     const [pokemonId, setPokemonId] = useState<string>("");
     const [pokemonName, setPokemonName] = useState<string>("");
-    const [prevPokemonId, setPrevPokemonId] = useState<Set<number>>(new Set());
-    const [randomNum, setRandomNum] = useState<number>(1);
     // Game state
     const [score, setScore] = useState<number>(0);
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -84,14 +125,9 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     const [isGameActive, setIsGameActive] = useState<boolean>(false);
     const [genTotal, setGenTotal] = useState<number>(GEN_ONE_TOTAL);
     // Game settings
-    const [next, setNext] = useState<boolean>(false);
     const [generationNum, setGenerationNum] = useState<number>(DEFAULT_GEN_NUM);
     const [generationName, setGenerationName] = useState<string>("generation-i");
     const [generation, setGeneration] = useState<Generation | undefined>(undefined);
-    const [generationRange, setGenerationRange] = useState<IGenRange>({
-        start: DEFAULT_GEN_NUM,
-        end: GEN_ONE_TOTAL,
-    });
     // Loading state
     const [isPokemonLoading, setIsPokemonLoading] = useState<boolean>(true);
     const [isGenLoading, setIsGenLoading] = useState<boolean>(true);
@@ -99,6 +135,8 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     const [pokemonFetchError, setPokemonFetchError] = useState<TErrorState>(null);
     const [pokemonRefetch, setPokemonRefetch] = useState<boolean>(false);
     const [generationFetchError, setGenerationFetchError] = useState<TErrorState>(null);
+    // Reducer for randomizing pokemonId based on generation range
+    const [state, dispatch] = useReducer(pokemonIdReducer, initialState);
 
     // Check if game is won
     const isGameWon = score === genTotal;
@@ -122,7 +160,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
 
     const handleNext = () => {
         setIsRevealed(false);
-        setNext(!next);
+        dispatch({ type: "randomize", clear: false });
     };
 
     // Reset the game
@@ -130,8 +168,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         setIsRevealed(false);
         setIsGameOver(false);
         setScore(0);
-        setPrevPokemonId(new Set());
-        setNext(!next);
+        dispatch({ type: "randomize", clear: true });
         setIsGameActive(false);
     };
 
@@ -146,24 +183,6 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         setIsGameActive(bool);
         setGenerationName(generation?.name || "N/A");
     };
-
-    // Prevents the same pokemon from being displayed twice during a game
-    const preventRepeat = useCallback((start: number, end: number): number => {
-        let randomNum: number;
-
-        // If an id has already been used, keep randomizing until a unique one is found
-        do {
-            randomNum = randomizeNumber(start, end);
-        } while (prevPokemonId.has(randomNum));
-
-        // Update the set with previous ids
-        setPrevPokemonId((prevSet) => {
-            const newSet = new Set(prevSet);
-            newSet.add(randomNum);
-            return newSet;
-        });
-        return randomNum;
-    }, [prevPokemonId]);
 
     // Fetch the list of pokemon for the given generation
     useEffect(() => {
@@ -205,27 +224,13 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         const genTotalNum = generation?.pokemon_species.length || GEN_ONE_TOTAL;
         const end = genTotalNum - 1 + start;
 
-        // Set genTotal, generationRange and clear prevPokemonId
+        // Update genTotal
         setGenTotal(genTotalNum);
-        setGenerationRange({ start, end });
-        setPrevPokemonId(new Set());
+
+        // Update genRange (also clears previousIds and randomizes a new number)
         console.log("Gen range: ", start, end);
-
-        // Randomize a number in the given range
-        // Triggers a pokemon fetch
-        const randomNum = preventRepeat(start, end);
-        setRandomNum(randomNum);
+        dispatch({ type: "genRange", genRange: { start, end } });
     }, [generation]);
-
-    // Randomize a number within the generation range when next is updated. 
-    // Triggers a pokemon fetch
-    useEffect(() => {
-        const { start, end } = generationRange;
-
-        // Get a unique random number
-        const randomNum = preventRepeat(start, end);
-        setRandomNum(randomNum);
-    }, [next]);
 
     // Fetch pokemon based on random number
     useEffect(() => {
@@ -253,12 +258,11 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 setIsPokemonLoading(false);
             }
         };
-        fetchPokemon(randomNum);
-        console.log("randomNum: ", randomNum);
-        console.log("Previous ids: ", prevPokemonId);
+        fetchPokemon(state.randomNum);
+        console.log("randomNum: ", state.randomNum);
         // The pokemonRefetch dependency allows the user to attempt to fetch the pokemon
         // again if there was an error during the game
-    }, [randomNum, pokemonRefetch]);
+    }, [state.randomNum, pokemonRefetch]);
 
     return (
         <GuessGameContext
@@ -284,8 +288,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 handleNext,
                 handleGuess,
                 handleRefetchPokemon,
-                randomNum,
-                prevPokemonId,
+                randomNum: state.randomNum,
             }}
         >
             {children}
