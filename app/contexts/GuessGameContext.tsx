@@ -11,18 +11,12 @@ interface IGuessGameProvider {
     children: ReactNode;
 }
 
-interface IGenRange {
-    start: number;
-    end: number;
-}
-
 export type TErrorState = string | null;
 
 interface IGuessGameContext {
     // Pokemon state
     pokemon: Pokemon | undefined;
     pokemonId: string;
-    randomNum: number;
 
     // Game state
     score: number;
@@ -55,54 +49,58 @@ interface IGuessGameContext {
 }
 
 interface IState {
-    genRange: IGenRange;
-    randomNum: number;
-    prevPokemonIds: Set<number>;
+    randomId: number;
+    remainingIds: number[];
+    staticIds: number[];
 }
 
-type TAction = { type: "randomize"; clear: boolean } | { type: "genRange"; genRange: IGenRange };
+type TAction =
+    | { type: "randomize"; reset?: boolean }
+    | { type: "pokemonIds"; remainingIds: number[] };
 
 const GEN_ONE_TOTAL = 151;
 const DEFAULT_GEN_NUM = 1;
 const DEFAULT_POKEMON_ID = 1;
 
 const initialState = {
-    genRange: { start: DEFAULT_GEN_NUM, end: GEN_ONE_TOTAL },
-    randomNum: DEFAULT_POKEMON_ID,
-    prevPokemonIds: new Set<number>(),
+    randomId: DEFAULT_POKEMON_ID,
+    remainingIds: [],
+    staticIds: [],
 };
 
 // Reducer function for randomizing pokemonId based on generation range
 const pokemonIdReducer = (state: IState, action: TAction): IState => {
     // Destructure state variables
-    const {
-        genRange: { start, end },
-        prevPokemonIds,
-    } = state;
-    
+    const { remainingIds, staticIds } = state;
+
     // Randomize a new pokemonId
     if (action.type === "randomize") {
-        // Create a new set based on previous set to modify
-        const newSet = new Set(prevPokemonIds);
-        
-        if (action.clear) {
-            newSet.clear();
+        // If reseting, use list of static ids, otherwise use remaining
+        let newIds: number[];
+        if (action.reset) {
+            newIds = [...staticIds];
+        } else {
+            newIds = [...remainingIds];
         }
-        
-        // Randomize a number that's not in the set yet
-        let num: number;
-        do {
-            num = randomizeNumber(start, end);
-        } while (newSet.has(num));
-        newSet.add(num);
-        
-        console.log("prevPokemonIds: ", newSet)
-        return { ...state, randomNum: num, prevPokemonIds: newSet };
-    } else if (action.type === "genRange") {
-        // Update the generation range and randomize a new number based on new range
-        const newState = { ...state, genRange: action.genRange };
 
-        return pokemonIdReducer(newState, { type: "randomize", clear: true });
+        // Randomize an index based on the length of the remainingIds.
+        // Remove and extract id from the remaining ids
+        const randomNum = randomizeNumber(0, newIds.length - 1);
+        const randomId = newIds.splice(randomNum, 1);
+        const id = randomId[0];
+
+        console.log("Remaining ids: ", newIds);
+        return { ...state, randomId: id, remainingIds: newIds };
+    } else if (action.type === "pokemonIds") {
+        // Update the pokemon id arrays
+        const newState = {
+            ...state,
+            remainingIds: action.remainingIds,
+            staticIds: action.remainingIds,
+        };
+
+        // Randomize an id from the new array
+        return pokemonIdReducer(newState, { type: "randomize", reset: true });
     } else {
         throw new Error("Unknown action in pokemonIdReducer.");
     }
@@ -116,7 +114,7 @@ const GuessGameContext = createContext<IGuessGameContext | null>(null);
 export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     // Pokemon state
     const [pokemon, setPokemon] = useState<Pokemon | undefined>(undefined);
-    const [pokemonId, setPokemonId] = useState<string>("");
+    const [pokemonId, setPokemonId] = useState<string>("001");
     const [pokemonName, setPokemonName] = useState<string>("");
     // Game state
     const [score, setScore] = useState<number>(0);
@@ -160,7 +158,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
 
     const handleNext = () => {
         setIsRevealed(false);
-        dispatch({ type: "randomize", clear: false });
+        dispatch({ type: "randomize" });
     };
 
     // Reset the game
@@ -168,7 +166,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         setIsRevealed(false);
         setIsGameOver(false);
         setScore(0);
-        dispatch({ type: "randomize", clear: true });
+        dispatch({ type: "randomize", reset: true });
         setIsGameActive(false);
     };
 
@@ -208,28 +206,18 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
 
     // Update generation range
     useEffect(() => {
-        // Extract ids into an array to check what the smallest id is
-        const extractedIds = generation?.pokemon_species.map((pokemon) =>
-            extractPokemonId(pokemon.url)
-        );
-        // Find the smallest id in the array
-        const firstId = extractedIds?.reduce(
-            (min, current) => (min < current ? min : current),
-            Infinity
-        );
-        console.log("smallest id: ", firstId);
+        if (!generation) return;
 
-        // Get the start and end of the generation
-        const start = firstId ? firstId : DEFAULT_GEN_NUM;
-        const genTotalNum = generation?.pokemon_species.length || GEN_ONE_TOTAL;
-        const end = genTotalNum - 1 + start;
+        // Extract ids into an array to check what the smallest id is
+        const extractedIds = generation.pokemon_species
+            .map((pokemon) => extractPokemonId(pokemon.url))
+            .sort((a, b) => a - b);
 
         // Update genTotal
+        const genTotalNum = generation.pokemon_species.length;
         setGenTotal(genTotalNum);
 
-        // Update genRange (also clears previousIds and randomizes a new number)
-        console.log("Gen range: ", start, end);
-        dispatch({ type: "genRange", genRange: { start, end } });
+        dispatch({ type: "pokemonIds", remainingIds: extractedIds });
     }, [generation]);
 
     // Fetch pokemon based on random number
@@ -258,11 +246,11 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 setIsPokemonLoading(false);
             }
         };
-        fetchPokemon(state.randomNum);
-        console.log("randomNum: ", state.randomNum);
+        fetchPokemon(state.randomId);
+        console.log("randomId: ", state.randomId);
         // The pokemonRefetch dependency allows the user to attempt to fetch the pokemon
         // again if there was an error during the game
-    }, [state.randomNum, pokemonRefetch]);
+    }, [state.randomId, pokemonRefetch]);
 
     return (
         <GuessGameContext
@@ -288,7 +276,6 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 handleNext,
                 handleGuess,
                 handleRefetchPokemon,
-                randomNum: state.randomNum,
             }}
         >
             {children}

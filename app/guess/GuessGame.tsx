@@ -21,7 +21,6 @@ export default function GuessGame({ generations }: IGuessGame) {
         // Pokemon state
         pokemon,
         pokemonId,
-        randomNum,
         // Game state
         score,
         isGameOver,
@@ -53,7 +52,6 @@ export default function GuessGame({ generations }: IGuessGame) {
             <GameDisplay
                 pokemon={pokemon}
                 pokemonId={pokemonId}
-                randomNum={randomNum}
                 isRevealed={isRevealed}
                 isGameOver={isGameOver}
                 isPokemonLoading={isPokemonLoading}

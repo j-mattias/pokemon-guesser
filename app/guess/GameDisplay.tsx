@@ -5,14 +5,12 @@ import { Pokemon } from "pokenode-ts";
 import Pokeball from "../components/Pokeball";
 
 import { TErrorState } from "../contexts/GuessGameContext";
-import { padStartId } from "@/utils/helpers";
 
 import "./GameDisplay.css";
 
 interface IGameDisplay {
     pokemon: Pokemon | undefined;
     pokemonId: string;
-    randomNum: number;
     isRevealed: boolean;
     isGameOver: boolean;
     isPokemonLoading: boolean;
@@ -23,7 +21,6 @@ interface IGameDisplay {
 export default function GameDisplay({
     pokemon,
     pokemonId,
-    randomNum,
     isRevealed,
     isGameOver,
     isPokemonLoading,
@@ -36,7 +33,7 @@ export default function GameDisplay({
     const imageExists = pokemon?.sprites.other?.["official-artwork"].front_default;
     const image = imageExists
         ? imageExists
-        : `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${padStartId(randomNum)}.png`;
+        : `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`;
 
     return (
         <figure className={`game-display ${computedGrayScale}`}>
