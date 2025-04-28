@@ -89,6 +89,9 @@ button,
     }
 }
 
+ol {
+    list-style-position: inside;
+}
 
 #page-wrapper {
     flex: 1;

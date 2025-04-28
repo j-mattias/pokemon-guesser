@@ -1,10 +1,21 @@
-.home {
-    display: grid;
-    grid-template-rows: 20px 1fr 20px;
-    align-items: center;
-    justify-items: center;
-    min-height: 100svh;
-    padding: 80px;
+.start {
+    display: flex;
+    flex-direction: column;
     gap: 64px;
-    font-family: var(--font-inter);
+    padding: 80px;
+
+    & .start-title {
+        align-self: center;
+    }
+
+    & .instructions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+
+        & .disclaimer {
+            font-style: italic;
+        }
+    }
 }
