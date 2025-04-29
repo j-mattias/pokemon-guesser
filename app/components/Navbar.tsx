@@ -9,7 +9,7 @@ import "./Navbar.css";
 const navLinks = [
     { href: "/", name: "Start" },
     { href: "/guess", name: "Guess" },
-    { href: "/pokedex", name: "Pokedex" },
+    { href: "/pokedex", name: "Pokédex" },
 ];
 
 export default function Navbar() {

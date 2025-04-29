@@ -28,8 +28,8 @@
                 min-height: 4ch;
 
                 &.active_link {
-                    background-color: var(--poke-red);
-                    color: var(--poke-light);
+                    background-color: var(--poke-light);
+                    color: var(--poke-red);
                 }
             }
         }

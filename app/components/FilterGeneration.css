@@ -7,13 +7,15 @@
     margin-inline: auto;
 
     & input[type="radio"]:checked + .filter-generations__label {
-        background-color: var(--poke-red);
+        background-color: var(--poke-light);
+        color: var(--poke-red);
     }
 
     & .filter-generations__label {
         background-color: var(--faded-gray);
         border-radius: 20px;
         text-transform: uppercase;
+        font-weight: 600;
         cursor: pointer;
         padding: 0.5rem 1rem;
 
