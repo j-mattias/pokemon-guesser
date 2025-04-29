@@ -4,8 +4,19 @@
     gap: 64px;
     padding: 80px;
 
-    & .start-title {
-        align-self: center;
+    & .title-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .start-logo {
+            margin-bottom: 2rem;
+        }
+    
+        & .start-title {
+            align-self: center;
+            font-size: 4rem;
+        }
     }
 
     & .instructions {

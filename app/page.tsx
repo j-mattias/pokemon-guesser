@@ -1,11 +1,15 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import "./page.css";
 
 export default function Start() {
     return (
-        <main className="start">
-            <h1 className="start-title">Pokemon Guesser</h1>
+        <main className="start spotlight-bg">
+            <div className="title-wrapper">
+                <Image className="start-logo" src={"/PG.svg"} alt="Pokemon Guesser logo" width={200} height={200} />
+                <h1 className="start-title">{`Pokémon Guesser`}</h1>
+            </div>
             <article className="instructions instructions--guesser">
                 <h2>Guess</h2>
                 <p>

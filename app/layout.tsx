@@ -27,7 +27,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${inter.variable}`}>
-                <Navbar />
+                <header>
+                    <Navbar />
+                </header>
                 <div id="page-wrapper">{children}</div>
             </body>
         </html>

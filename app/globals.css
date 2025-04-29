@@ -9,7 +9,7 @@
     --poke-light: #f0f0f0;
     --poke-yellow: #fff01f;
 
-    --max-width: 1000px;
+    --max-width: 1200px;
     --b-radius: 6px;
 }
 
@@ -31,12 +31,9 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
-    background-image: url("/pokeball.svg"), url("/pokeball.svg");
-    background-position: 0px 20px, 120px 120px;
-    background-repeat: repeat;
-    background-size: 80px 40px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 * {
@@ -60,17 +57,15 @@ a {
 
 button,
 .link-btn {
-    padding: 0.6rem 1rem;
-    border-radius: var(--b-radius);
-    border: none;
-    background-color: var(--poke-red);
-    color: var(--poke-light);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-color: var(--poke-light);
+    color: var(--poke-red);
     font-weight: bold;
     font-family: inherit;
     font-size: 1rem;
-    text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 0 4px 6px var(--primary-shadow);
     transition: all 0.3s ease-out;
 
     &:hover {
@@ -82,10 +77,10 @@ button,
         background-color: gray;
         cursor: not-allowed;
     }
-    
+
     &:focus-visible {
         outline: none;
-        border: 2px solid white;
+        border-color: var(--poke-red);
     }
 }
 
@@ -98,6 +93,22 @@ ol {
     max-width: var(--max-width);
     width: 100%;
     margin: 0 auto;
-    background-color: var(--poke-dark);
-    box-shadow: 10px 0 5px -2px var(--primary-shadow), -10px 0 5px -2px var(--primary-shadow);
+}
+
+.spotlight-bg::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-image: radial-gradient(
+        circle at 50% -30%,
+        rgba(255, 0, 13, 0.35) 10%,
+        transparent 60%
+    );
+    background-size: 110% 100%;
+    background-position: 50% 0;
+    background-repeat: no-repeat;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import "./Navbar.css";
@@ -18,7 +19,7 @@ export default function Navbar() {
         <nav className="navbar">
             <div className="nav-links">
                 <Link href={"/"} className="logo-link">
-                    PG
+                    <Image src={"/PG.svg"} alt={"Pokemon Guesser logo"} width={40} height={40} />
                 </Link>
                 {navLinks.map((navLink) => {
                     const isActive =
