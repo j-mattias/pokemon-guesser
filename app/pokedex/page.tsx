@@ -119,13 +119,14 @@ const itemStyles = {
     },
     radialBackdrop: {
         size: "600px",
-        color: "rgba(241, 23, 34, 0.04)",
+        // color: "rgba(241, 23, 34, 0.04)",
+        color: "hsl(from var(--border-glow) h s l / 0.04)",
         falloff: "50%",
         // opacity: "1",
     },
     borderGlow: {
         size: "400px",
-        color: "rgba(241, 23, 34, 0.5)",
+        color: "var(--border-glow)",
         falloff: "40%",
         // opacity: "1",
     },

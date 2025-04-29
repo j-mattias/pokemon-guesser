@@ -9,6 +9,8 @@
     --poke-light: #f0f0f0;
     --poke-yellow: #fff01f;
 
+    --border-glow: rgba(241, 23, 34, 0.5);
+
     --max-width: 1200px;
     --b-radius: 6px;
 }
