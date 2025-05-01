@@ -54,10 +54,10 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
 
     return (
         <form onSubmit={handleSubmit} className="guess-form">
-            <h2 className="guess-form__title">{`Who's that Pokemon?`}</h2>
+            <h2 className="guess-form__title">{`Who's that Pokémon?`}</h2>
             <Select
                 options={options}
-                placeholder="Pokemon"
+                placeholder="Pokémon"
                 id="guess-input"
                 onChange={handleChange}
                 isClearable={true}

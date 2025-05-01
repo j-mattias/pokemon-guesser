@@ -36,41 +36,45 @@ export default function GameDisplay({
         : `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${pokemonId}.png`;
 
     return (
-        <figure className={`game-display ${computedGrayScale}`}>
-            <div className="game-display__image-wrapper">
-                <Image
-                    className="game-display__glow-image"
-                    src="glow.svg"
-                    alt="Shining glow backdrop for pokemon"
-                    width={700}
-                    height={700}
-                />
-                {pokemonId && !isPokemonLoading && (
-                    <Image
-                        className={`game-display__pokemon-image ${isRevealed ? "revealed" : ""}`}
-                        src={image}
-                        alt={"Image of a pokemon silhouette to guess"}
-                        width={450}
-                        height={450}
-                    />
-                )}
+        <div className="game-backdrop">
+            <div className="game-display-wrapper">
+                <figure className={`game-display ${computedGrayScale}`}>
+                    <div className="game-display__image-wrapper">
+                        <Image
+                            className="game-display__glow-image"
+                            src="glow.svg"
+                            alt="Shining glow backdrop for pokemon"
+                            width={700}
+                            height={700}
+                        />
+                        {pokemonId && !isPokemonLoading && (
+                            <Image
+                                className={`game-display__pokemon-image ${isRevealed ? "revealed" : ""}`}
+                                src={image}
+                                alt={"Image of a pokemon silhouette to guess"}
+                                width={450}
+                                height={450}
+                            />
+                        )}
 
-                {isPokemonLoading && (
-                    <Pokeball className="game-display__loading" loader={"shake"} />
-                )}
+                        {isPokemonLoading && (
+                            <Pokeball className="game-display__loading" loader={"shake"} />
+                        )}
 
-                {!isPokemonLoading && pokemonFetchError && (
-                    <div className="game-display__error">
-                        <p>{pokemonFetchError}</p>
-                        <button className="retry-btn" onClick={handleRefetchPokemon}>
-                            Retry
-                        </button>
+                        {!isPokemonLoading && pokemonFetchError && (
+                            <div className="game-display__error">
+                                <p>{pokemonFetchError}</p>
+                                <button className="retry-btn" onClick={handleRefetchPokemon}>
+                                    Retry
+                                </button>
+                            </div>
+                        )}
                     </div>
-                )}
+                    <figcaption className={`game-display__answer`}>
+                        {isRevealed ? pokemon?.name : "?"}
+                    </figcaption>
+                </figure>
             </div>
-            <figcaption className={`game-display__answer`}>
-                {isRevealed ? pokemon?.name : "?"}
-            </figcaption>
-        </figure>
+        </div>
     );
 }

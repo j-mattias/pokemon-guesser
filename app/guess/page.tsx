@@ -16,7 +16,7 @@ export default async function GuessPage() {
 
     return (
         <main id="guess-page">
-            <h1 className="guess-page__title">Pokemon Guesser</h1>
+            <h1 className="guess-page__title">{`Pokémon Guesser`}</h1>
             <GuessGameContextProvider>
                 <GuessGame generations={generations} />
             </GuessGameContextProvider>
