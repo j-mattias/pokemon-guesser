@@ -32,6 +32,7 @@
         background-image: url("/pokemonGuesser_background.png");
         background-repeat: no-repeat;
         background-size: cover;
+        background-position: center;
         position: relative;
         overflow: hidden;
         filter: none;
@@ -47,7 +48,11 @@
             grid-template-rows: 1fr;
             align-items: center;
             justify-items: center;
-            grid-auto-columns: 470px 1fr;
+            justify-content: center;
+            grid-auto-columns: 450px 1fr;
+
+            position: relative;
+            aspect-ratio: 1 / 1;
 
             & .game-display__glow-image {
                 grid-row: 1 / 1;
@@ -73,6 +78,7 @@
 
             & .game-display__pokemon-image {
                 filter: brightness(0);
+                object-fit: contain;
 
                 &.revealed {
                     filter: brightness(1);
@@ -92,6 +98,34 @@
             text-shadow: 2px 2px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1),
                 2px -2px 0px rgba(0, 0, 0, 1), -2px 2px 0px rgba(0, 0, 0, 1);
             color: var(--poke-yellow);
+        }
+    }
+}
+
+@media (max-width: 1000px) {
+    & .game-display-wrapper {
+        width: 100%;
+
+        & .game-display {
+            flex-direction: column;
+
+            & .game-display__answer {
+                padding: 0 0 1rem 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    & .game-display-wrapper {
+        & .game-display {
+            & .game-display__image-wrapper {
+                grid-auto-columns: 340px 1fr;
+            }
+
+            & .game-display__answer {
+                font-size: 2rem;
+            }
         }
     }
 }

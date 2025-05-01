@@ -49,11 +49,13 @@ export default function GameDisplay({
                         />
                         {pokemonId && !isPokemonLoading && (
                             <Image
-                                className={`game-display__pokemon-image ${isRevealed ? "revealed" : ""}`}
+                                className={`game-display__pokemon-image ${
+                                    isRevealed ? "revealed" : ""
+                                }`}
                                 src={image}
                                 alt={"Image of a pokemon silhouette to guess"}
-                                width={450}
-                                height={450}
+                                fill={true}
+                                sizes="(max-width: 600px) 90vw, (max-width: 1000px) 70vw, 50vw"
                             />
                         )}
 

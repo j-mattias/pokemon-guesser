@@ -1,11 +1,23 @@
 .guess-form {
-    display: grid;
     gap: 1rem;
-    grid-template-columns: 1fr auto;
-    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     & .guess-form__title {
         font-size: 1.4rem;
-        grid-column: span 2;
+    }
+
+    & .input-wrapper {
+        display: flex;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    & .guess-form {
+        & .input-wrapper {
+            flex-direction: column;
+        }
     }
 }
