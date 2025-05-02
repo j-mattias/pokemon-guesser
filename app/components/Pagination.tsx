@@ -52,10 +52,13 @@ export default function Pagination({ pages, currentPage }: IPagination) {
                     // Limit links rendered to 2 before/after currentPage
                     if (page > currentPage + 2 || page < currentPage - 2) return null;
 
+                    // Add active class to current page
                     const activeLink = currentPage === page ? "active_link" : "";
+                    // Add hidden class to pages that aren't active (used for small screens)
+                    const hidden = currentPage !== page ? "hidden" : "";
 
                     return (
-                        <li className={`pagination__item`} key={page}>
+                        <li className={`pagination__item ${hidden}`} key={page}>
                             <Link
                                 className={`pagination__link ${activeLink}`}
                                 href={`${pathname}?${createQueryString("page", `${page}`)}`}
