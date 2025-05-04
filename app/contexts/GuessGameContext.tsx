@@ -114,7 +114,7 @@ const GuessGameContext = createContext<IGuessGameContext | null>(null);
 export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     // Pokemon state
     const [pokemon, setPokemon] = useState<Pokemon | undefined>(undefined);
-    const [pokemonId, setPokemonId] = useState<string>("001");
+    const [pokemonId, setPokemonId] = useState<string>("");
     const [pokemonName, setPokemonName] = useState<string>("");
     // Game state
     const [score, setScore] = useState<number>(0);

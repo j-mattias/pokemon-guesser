@@ -43,3 +43,44 @@
         }
     }
 }
+
+@media (max-width: 1200px) {
+    & .error-page {
+        & .pikachu {
+            width: 400px;
+            height: auto;
+        }
+        & .wrapper {
+            & .error-page__title {
+                font-size: 6rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 800px) {
+    & .error-page {
+        grid-template-areas:
+            "error"
+            "img";
+        gap: 2rem;
+
+        & .pikachu {
+            width: 300px;
+            justify-self: center;
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    & .error-page {
+        & .pikachu {
+            width: 200px;
+        }
+        & .wrapper {
+            & .error-page__title {
+                font-size: 4rem;
+            }
+        }
+    }
+}
