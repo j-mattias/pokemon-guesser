@@ -46,3 +46,33 @@
         }
     }
 }
+
+@media (max-width: 800px) {
+    & .not-found {
+        height: 600px;
+
+        & .unown {
+            &.unown-f {
+                width: 250px;
+                height: auto;
+                left: 0;
+                top: 10%;
+            }
+
+            &.unown-qm {
+                width: auto;
+                height: 250px;
+                right: 1rem;
+                bottom: 25%;
+            }
+        }
+
+        & .wrapper {
+            padding: 1rem;
+
+            & .not-found__title {
+                font-size: 6rem;
+            }
+        }
+    }
+}
