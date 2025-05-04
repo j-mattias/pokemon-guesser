@@ -92,3 +92,29 @@
         }
     }
 }
+
+@media (max-width: 600px) {
+    & .pokemon-details-page {
+        & .pokemon-wrapper {
+            & .pokemon-image {
+                & img {
+                    width: 300px;
+                    height: auto;
+                }
+            }
+        }
+
+        & .details-wrapper {
+            grid-template-columns: 1fr;
+
+            & > * {
+                border-bottom: 2px solid var(--faded-gray);
+                padding-block: 1rem;
+            }
+
+            & > *:last-child {
+                border: none;
+            }
+        }
+    }
+}
