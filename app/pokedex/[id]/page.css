@@ -60,7 +60,7 @@
     }
 
     & .details-wrapper {
-        width: 100%;
+        width: 80%;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 0.5rem;
@@ -93,17 +93,16 @@
     }
 }
 
+@media (max-width: 1000px) {
+    & .pokemon-details-page {
+        & .details-wrapper {
+            width: 100%;
+        }
+    }
+}
+
 @media (max-width: 600px) {
     & .pokemon-details-page {
-        & .pokemon-wrapper {
-            & .pokemon-image {
-                & img {
-                    width: 300px;
-                    height: auto;
-                }
-            }
-        }
-
         & .details-wrapper {
             grid-template-columns: 1fr;
 

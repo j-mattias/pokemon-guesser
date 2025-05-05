@@ -55,7 +55,7 @@ export default function GameDisplay({
                                 src={image}
                                 alt={"Image of a pokemon silhouette to guess"}
                                 fill={true}
-                                sizes="(max-width: 600px) 90vw, (max-width: 1000px) 70vw, 50vw"
+                                sizes="(max-width: 600px) 100vw, (max-width: 1000px) 70vw, 50vw"
                             />
                         )}
 

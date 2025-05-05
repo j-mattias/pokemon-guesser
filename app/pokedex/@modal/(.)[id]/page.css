@@ -99,15 +99,6 @@
 
 @media (max-width: 600px) {
     & .pokedex-modal {
-        & .pokemon-wrapper {
-            & .pokemon-image {
-                & img {
-                    width: 350px;
-                    height: auto;
-                }
-            }
-        }
-
         & .details-wrapper {
             grid-template-columns: 1fr;
 
@@ -118,18 +109,6 @@
 
             & > *:last-child {
                 border: none;
-            }
-        }
-    }
-}
-
-@media (max-width: 400px) {
-    & .pokedex-modal {
-        & .pokemon-wrapper {
-            & .pokemon-image {
-                & img {
-                    width: 250px;
-                }
             }
         }
     }

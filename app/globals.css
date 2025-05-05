@@ -57,6 +57,11 @@ a {
     }
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 button,
 .link-btn {
     padding: 0.4rem 1rem;

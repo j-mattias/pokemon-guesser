@@ -25,15 +25,3 @@
         }
     }
 }
-
-@media (max-width: 600px) {
-    & .not-found {
-        width: 350px;
-    }
-}
-
-@media (max-width: 400px) {
-    & .not-found {
-        width: 300px;
-    }
-}

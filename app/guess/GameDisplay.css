@@ -57,6 +57,8 @@
             & .game-display__glow-image {
                 grid-row: 1 / 1;
                 grid-column: 1 / 1;
+                min-width: 700px;
+                min-height: 700px;
             }
 
             & .game-display__loading,
@@ -126,6 +128,11 @@
         & .game-display {
             & .game-display__image-wrapper {
                 grid-auto-columns: 340px 1fr;
+
+                & .game-display__glow-image {
+                    min-width: 600px;
+                    min-height: 600px;
+                }
             }
 
             & .game-display__answer {
