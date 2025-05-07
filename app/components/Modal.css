@@ -3,7 +3,7 @@
     z-index: 10;
     left: 0;
     top: 0;
-    width: 100%;
+    width: calc(100% - var(--scrollbarWidth));
     height: 100%;
     backdrop-filter: blur(2px) brightness(60%);
 
@@ -30,9 +30,10 @@
         position: absolute;
         z-index: 11;
         top: 50%;
-        left: 49.5%;
-        translate: -50% -50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         max-width: 70%;
+        overflow-y: auto;
     }
 }
 

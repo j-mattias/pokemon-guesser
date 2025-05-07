@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { MouseEventHandler, useCallback, useEffect, useRef } from "react";
+import { MouseEventHandler, useCallback, useEffect, useRef, useState } from "react";
 
 import "./Modal.css";
 
@@ -12,6 +12,7 @@ interface IModal {
 type TRef = HTMLDivElement | null;
 
 export default function Modal({ children }: IModal) {
+    const [scrollbarWidth, setScrollbarWidth] = useState<number>(0);
     const overlayRef = useRef<TRef>(null);
     const modalRef = useRef<TRef>(null);
     const xRef = useRef<TRef>(null);
@@ -36,24 +37,32 @@ export default function Modal({ children }: IModal) {
         [onClose, overlayRef, modalRef, xRef]
     );
 
-    // Close the modal if Escape is pressed
-    const onKeyDown = useCallback(
-        (e: KeyboardEvent) => {
+    // Add a listener for keydown on mount, and remove it once it's been pressed
+    useEffect(() => {
+        // Close the modal if Escape is pressed
+        const onKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
                 onClose();
             }
-        },
-        [onClose]
-    );
+        };
 
-    // Add a listener for keydown on mount, and remove it once it's been pressed
-    useEffect(() => {
         document.addEventListener("keydown", onKeyDown);
         return () => document.removeEventListener("keydown", onKeyDown);
-    }, [onKeyDown]);
+    }, []);
+
+    // Calculate the scrollbar width, otherwise modal will be slightly offset
+    useEffect(() => {
+        const scrollbarWidth = window.innerWidth - document.body.clientWidth;
+        setScrollbarWidth(scrollbarWidth);
+    }, []);
 
     return (
-        <div className="modal-overlay" ref={overlayRef} onClick={handleClose}>
+        <div
+            className="modal-overlay"
+            ref={overlayRef}
+            onClick={handleClose}
+            style={{ "--scrollbarWidth": `${scrollbarWidth}px` } as React.CSSProperties}
+        >
             <div className="modal" ref={modalRef}>
                 <div className="modal-x" ref={xRef}></div>
                 {children}
