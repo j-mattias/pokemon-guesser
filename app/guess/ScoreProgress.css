@@ -1,5 +1,5 @@
 .score-progress {
-    padding: 1rem;
+    padding-inline: 1rem;
     width: 100%;
     min-width: 300px;
     display: flex;

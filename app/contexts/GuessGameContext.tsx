@@ -12,6 +12,11 @@ interface IGuessGameProvider {
     children: ReactNode;
 }
 
+interface ICorrectPokemon {
+    pokemonId: string;
+    name: string;
+}
+
 export type TErrorState = string | null;
 
 interface IGuessGameContext {
@@ -27,6 +32,7 @@ interface IGuessGameContext {
     isGameWon: boolean;
     genTotal: number;
     generationName: string;
+    correctPokemonIds: ICorrectPokemon[];
 
     // Game settings
     generationNum: number;
@@ -123,6 +129,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     const [isRevealed, setIsRevealed] = useState<boolean>(false);
     const [isGameActive, setIsGameActive] = useState<boolean>(false);
     const [genTotal, setGenTotal] = useState<number>(GEN_ONE_TOTAL);
+    const [correctPokemonIds, setCorrectPokemonIds] = useState<ICorrectPokemon[]>([]);
     // Game settings
     const [generationNum, setGenerationNum] = useState<number>(DEFAULT_GEN_NUM);
     const [generationName, setGenerationName] = useState<string>("generation-i");
@@ -159,6 +166,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
 
     const handleNext = () => {
         setIsRevealed(false);
+        setCorrectPokemonIds((prevIds) => [...prevIds, { pokemonId, name: pokemonName }]);
         dispatch({ type: "randomize" });
     };
 
@@ -167,6 +175,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         setIsRevealed(false);
         setIsGameOver(false);
         setScore(0);
+        setCorrectPokemonIds([]);
         dispatch({ type: "randomize", reset: true });
         setIsGameActive(false);
     };
@@ -266,6 +275,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 isGameWon,
                 generation,
                 generationName,
+                correctPokemonIds,
                 generationNum,
                 isGenLoading,
                 isPokemonLoading,

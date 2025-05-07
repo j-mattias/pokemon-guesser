@@ -35,7 +35,7 @@ export default function GameControls({ generationName, isGameOver, isRevealed }:
             );
         } else {
             return isRevealed ? (
-                <button onClick={handleNext} autoFocus={true}>
+                <button className="next-btn" onClick={handleNext} autoFocus={true}>
                     Next
                 </button>
             ) : (
