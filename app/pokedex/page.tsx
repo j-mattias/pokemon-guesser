@@ -9,7 +9,7 @@ import Pagination from "../components/Pagination";
 import FilterGeneration from "../components/FilterGeneration";
 import { addIdsToPokemonList } from "@/utils/helpers";
 import { IPokemonBasic } from "@/utils/interfaces";
-import { POKEMON_MAX_COUNT } from "@/data/globalVariables";
+import { DEBUG, POKEMON_MAX_COUNT } from "@/data/globalVariables";
 import { fetchGenerationById, fetchGenerations, fetchPokemonList } from "@/utils/dataFetching";
 
 import "./page.css";
@@ -34,11 +34,11 @@ export default async function PokedexPage({
     const pokemonGenerations = await fetchGenerations();
 
     const currentPage = pageNum || 1;
-    console.log("searchParams: ", page);
+    DEBUG && console.log("searchParams: ", page);
 
     // Calculate the offset for fetching pokemon
     let offset: number = (currentPage - 1) * LIMIT || 0;
-    console.log("offset: ", offset);
+    DEBUG && console.log("offset: ", offset);
 
     // Initialize a list to store pokemon data and pages for pagination
     let pokemonList: IPokemonBasic[] = [];
@@ -63,7 +63,7 @@ export default async function PokedexPage({
 
         // Set the results to show for a specified page
         pokemonList = sortedList.slice(offset, end);
-        console.log("gen list", pokemonList);
+        DEBUG && console.log("gen list", pokemonList);
 
         // Calculate the amount of pages needed to display all pokemon in given generation
         pages = Math.ceil(sortedList.length / LIMIT);
@@ -78,7 +78,7 @@ export default async function PokedexPage({
 
         // Set the results to show for a specified page
         pokemonList = addIdsToPokemonList(data.results);
-        console.log("all list: ", pokemonList);
+        DEBUG && console.log("all list: ", pokemonList);
 
         // Calculate the amount of pages needed to display all pokemon
         // (with available images) in the list
@@ -87,10 +87,10 @@ export default async function PokedexPage({
 
     // Validate searchParams
     if (gen && (genNum > pokemonGenerations.count || genNum < 1)) {
-        console.log("Not valid gen");
+        DEBUG && console.log("Not valid gen");
         notFound();
     } else if (page && (pageNum > pages || pageNum < 1)) {
-        console.log("Not a valid page");
+        DEBUG && console.log("Not a valid page");
         notFound();
     }
 

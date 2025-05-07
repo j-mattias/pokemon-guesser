@@ -4,6 +4,8 @@ import { JSX } from "react";
 
 import Image from "next/image";
 
+import { DEBUG } from "@/data/globalVariables";
+
 import "./ErrorPage.css";
 
 interface IErrorPage {
@@ -13,7 +15,7 @@ interface IErrorPage {
 }
 
 export default function ErrorPage({ error, backElement, reset }: IErrorPage) {
-    console.log(error);
+    DEBUG && console.log(error);
     const errorMsg = typeof error === "object" ? error.message : error;
 
     return (

@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { Generation } from "pokenode-ts";
 import Select, { SingleValue } from "react-select";
+
+import { DEBUG } from "@/data/globalVariables";
+
 import "./GuessForm.css";
 
 interface IGuessForm {
@@ -48,7 +51,7 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
                 return { value: pokemon.name, label: pokemon.name };
             });
             setOptions(options);
-            console.log("options: ", options);
+            DEBUG && console.log("options: ", options);
         }
     }, [generation]);
 
