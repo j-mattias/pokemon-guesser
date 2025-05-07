@@ -6,9 +6,9 @@ import GameSettings from "./GameSettings";
 import GameDisplay from "./GameDisplay";
 import ScoreProgress from "./ScoreProgress";
 import GameControls from "./GameControls";
-import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "../../components/ErrorPage";
 import CorrectGuesses from "./CorrectGuesses";
-import { useGuessGameContext } from "../contexts/GuessGameContext";
+import { useGuessGameContext } from "../../contexts/GuessGameContext";
 
 import "./GuessGame.css";
 

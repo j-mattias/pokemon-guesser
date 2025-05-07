@@ -2,9 +2,9 @@ import Image from "next/image";
 
 import { Pokemon } from "pokenode-ts";
 
-import Pokeball from "../components/Pokeball";
+import Pokeball from "../../components/Pokeball";
 
-import { TErrorState } from "../contexts/GuessGameContext";
+import { TErrorState } from "../../contexts/GuessGameContext";
 
 import "./GameDisplay.css";
 

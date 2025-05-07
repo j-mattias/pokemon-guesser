@@ -1,6 +1,6 @@
 "use client";
 
-import { useGuessGameContext } from "../contexts/GuessGameContext";
+import { useGuessGameContext } from "../../contexts/GuessGameContext";
 import GuessForm from "./GuessForm";
 
 import "./GameControls.css";
@@ -21,7 +21,9 @@ export default function GameControls({ generationName, isGameOver, isRevealed }:
             return (
                 <>
                     <h2>{`Well done! You cleared ${generationName.toUpperCase()}.`}</h2>
-                    <button onClick={handleRetry} autoFocus={true}>Play again?</button>
+                    <button onClick={handleRetry} autoFocus={true}>
+                        Play again?
+                    </button>
                 </>
             );
         } else if (isGameOver) {

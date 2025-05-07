@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 
-import { useGuessGameContext } from "../contexts/GuessGameContext";
-import Divider from "../components/Divider";
+import { useGuessGameContext } from "../../contexts/GuessGameContext";
+import Divider from "../../components/Divider";
 
 import "./CorrectGuesses.css";
 

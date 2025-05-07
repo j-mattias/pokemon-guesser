@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import localFont from "next/font/local";
 
 import { GuessGameContextProvider } from "../contexts/GuessGameContext";
-import GuessGame from "./GuessGame";
+import GuessGame from "./components/GuessGame";
 import { fetchGenerations } from "@/utils/dataFetching";
 
 import "./page.css";
