@@ -54,6 +54,6 @@ export function validateInt(num: number): boolean {
 export function debugLog<T>(logMsg: string | Error, ...args: T[]) {
     const isDebug = process.env.NEXT_PUBLIC_DEBUG === "true";
     if (isDebug) {
-        console.log(`[DEBUG]: ${logMsg}`, ...args)
+        console.log(`[DEBUG] ${logMsg}`, ...args)
     }
 }
