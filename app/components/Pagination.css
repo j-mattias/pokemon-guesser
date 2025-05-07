@@ -22,14 +22,14 @@
                 align-items: center;
                 padding: 0.4rem;
                 background-color: var(--faded-gray);
-                color:var(--poke-light);
+                color: var(--poke-light);
                 border-radius: 50%;
                 min-width: 4ch;
                 min-height: 4ch;
 
                 &.active_link {
-                    background-color: var(--poke-red);
-                    color: var(--poke-light);
+                    background-color: var(--poke-light);
+                    color: var(--poke-red);
                 }
             }
         }
@@ -39,5 +39,17 @@
         background-color: var(--primary-shadow);
         padding: 0.2rem 0.4rem;
         border-radius: var(--b-radius);
+    }
+}
+
+@media (max-width: 500px) {
+    & .pagination-wrapper {
+        & .pagination {
+            & .pagination__item {
+                &.hidden {
+                    display: none;
+                }
+            }
+        }
     }
 }

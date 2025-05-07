@@ -2,6 +2,11 @@
     background-color: var(--poke-dark);
     border-radius: var(--b-radius);
 
+    & .wrapper {
+        width: 100%;
+        padding: 3rem;
+    }
+
     & .unown {
         &.unown-f {
             left: 0;
@@ -9,6 +14,14 @@
 
         &.unown-qm {
             right: 5%;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    & .not-found {
+        & .wrapper {
+            padding: 1rem;
         }
     }
 }

@@ -6,6 +6,7 @@
     background-color: #1d1d1d;
     padding: 1rem;
     border-radius: var(--b-radius);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     text-transform: capitalize;
 
     & ul {
@@ -91,6 +92,23 @@
                     display: flex;
                     justify-content: space-between;
                 }
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    & .pokedex-modal {
+        & .details-wrapper {
+            grid-template-columns: 1fr;
+
+            & > * {
+                border-bottom: 2px solid var(--faded-gray);
+                padding-block: 1rem;
+            }
+
+            & > *:last-child {
+                border: none;
             }
         }
     }

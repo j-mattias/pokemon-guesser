@@ -54,39 +54,41 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
 
     return (
         <form onSubmit={handleSubmit} className="guess-form">
-            <h2 className="guess-form__title">{`Who's that Pokemon?`}</h2>
-            <Select
-                options={options}
-                placeholder="Pokemon"
-                id="guess-input"
-                onChange={handleChange}
-                isClearable={true}
-                isDisabled={isProcessing}
-                autoFocus={true}
-                styles={{
-                    control: (baseStyles) => ({
-                        ...baseStyles,
-                        border: "none",
-                        minWidth: "20ch",
-                        textTransform: "capitalize",
-                    }),
-                    valueContainer: (baseStyles) => ({
-                        ...baseStyles,
-                        paddingLeft: "1rem",
-                        ":hover": {
-                            cursor: "text",
-                        },
-                    }),
-                    option: (baseStyles) => ({
-                        ...baseStyles,
-                        textTransform: "capitalize",
-                        color: "var(--poke-dark)",
-                    }),
-                }}
-            />
-            <button className="submit-btn" disabled={isProcessing} type="submit">
-                {isProcessing ? "Checking..." : "Guess"}
-            </button>
+            <h2 className="guess-form__title">{`Who's that Pokémon?`}</h2>
+            <div className="input-wrapper">
+                <Select
+                    options={options}
+                    placeholder="Pokémon"
+                    id="guess-input"
+                    onChange={handleChange}
+                    isClearable={true}
+                    isDisabled={isProcessing}
+                    autoFocus={true}
+                    styles={{
+                        control: (baseStyles) => ({
+                            ...baseStyles,
+                            border: "none",
+                            minWidth: "20ch",
+                            textTransform: "capitalize",
+                        }),
+                        valueContainer: (baseStyles) => ({
+                            ...baseStyles,
+                            paddingLeft: "1rem",
+                            ":hover": {
+                                cursor: "text",
+                            },
+                        }),
+                        option: (baseStyles) => ({
+                            ...baseStyles,
+                            textTransform: "capitalize",
+                            color: "var(--poke-dark)",
+                        }),
+                    }}
+                />
+                <button className="submit-btn" disabled={isProcessing} type="submit">
+                    {isProcessing ? "Checking..." : "Guess"}
+                </button>
+            </div>
         </form>
     );
 }

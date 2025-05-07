@@ -32,6 +32,22 @@
         top: 50%;
         left: 49.5%;
         translate: -50% -50%;
-        width: fit-content;
+        max-width: 70%;
+    }
+}
+
+@media (max-width: 1000px) {
+    & .modal-overlay {
+        & .modal {
+            min-width: 70%;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    & .modal-overlay {
+        & .modal {
+            min-width: 85%;
+        }
     }
 }

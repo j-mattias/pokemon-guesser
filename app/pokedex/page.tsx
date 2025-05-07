@@ -96,12 +96,13 @@ export default async function PokedexPage({
 
     return (
         <main id="pokedex-page">
-            <h1 className="pokedex-page__title">Pokedex</h1>
+            <h1 className="pokedex-page__title">{`Pokédex`}</h1>
             <FilterGeneration generations={pokemonGenerations.results} />
             <ListGlowItemBorders
                 list={pokemonList}
                 cardComponent={PokemonCard}
                 itemStyles={itemStyles}
+                className="pokemon-list"
             />
             {pages > 1 && <Pagination pages={pages} currentPage={currentPage} />}
         </main>
@@ -111,21 +112,22 @@ export default async function PokedexPage({
 const itemStyles = {
     itemStyle: {
         borderWidth: "1px",
-        // borderRadius: "2px",
-        borderColor: "rgba(146, 146, 146, 0.1)",
-        // blur: "0px",
+        // borderRadius: "8px",
+        borderColor: "rgba(187, 187, 187, 0.25)",
+        // blur: "1px",
         // backgroundColor: "rgb(141, 0, 0)",
     },
     radialBackdrop: {
-        // size: "500px",
-        // color: "rgba(255, 255, 255, 0.04)",
-        // falloff: "40%",
+        size: "600px",
+        // color: "rgba(241, 23, 34, 0.04)",
+        color: "hsl(from var(--border-glow) h s l / 0.04)",
+        falloff: "50%",
         // opacity: "1",
     },
     borderGlow: {
-        // size: "500px",
-        // color: "rgba(255, 255, 255, 0.4)",
-        // falloff: "40%",
+        size: "400px",
+        color: "var(--border-glow)",
+        falloff: "40%",
         // opacity: "1",
     },
 };

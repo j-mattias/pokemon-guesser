@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { CSSProperties, Fragment, useRef, useState } from "react";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
@@ -15,6 +15,9 @@ interface IFilterGeneration {
 }
 
 export default function FilterGeneration({ generations }: IFilterGeneration) {
+    const [open, setOpen] = useState<boolean>(false);
+    const ref = useRef<HTMLDivElement | null>(null);
+
     const radioGroup = "generation-radio";
 
     const router = useRouter();
@@ -38,38 +41,64 @@ export default function FilterGeneration({ generations }: IFilterGeneration) {
         router.push(`${pathname}`);
     };
 
+    const handleFilterClick = () => {
+        setOpen((prev) => !prev);
+    };
+
     return (
-        <form className="filter-generations" id="filter-generations">
-            <input
-                type="radio"
-                name={radioGroup}
-                id="all"
-                hidden={true}
-                value={`all`}
-                defaultChecked={!genParam}
-            />
-            <label className="filter-generations__label" htmlFor="all" onClick={handleClickAll}>
-                All
-            </label>
-            {generations.map((generation, index) => (
-                <Fragment key={generation.name}>
+        <div className="filter-container">
+            <button
+                className={`filter-dropdown ${open ? "active" : ""}`}
+                onClick={handleFilterClick}
+            >
+                Filters
+            </button>
+            <form
+                style={
+                    {
+                        "--filters-max-height": `${open ? ref.current?.scrollHeight : 0}px`,
+                    } as CSSProperties
+                }
+                className={`filter-generations`}
+                id="filter-generations"
+            >
+                <div className={`filters-wrapper`} ref={ref}>
                     <input
                         type="radio"
                         name={radioGroup}
-                        id={generation.name}
+                        id="all"
                         hidden={true}
-                        value={index + 1}
-                        defaultChecked={Number(genParam) === index + 1}
+                        value={`all`}
+                        defaultChecked={!genParam}
                     />
                     <label
                         className="filter-generations__label"
-                        htmlFor={generation.name}
-                        onClick={handleClickGen.bind(null, index + 1)}
+                        htmlFor="all"
+                        onClick={handleClickAll}
                     >
-                        {generation.name}
+                        All
                     </label>
-                </Fragment>
-            ))}
-        </form>
+                    {generations.map((generation, index) => (
+                        <Fragment key={generation.name}>
+                            <input
+                                type="radio"
+                                name={radioGroup}
+                                id={generation.name}
+                                hidden={true}
+                                value={index + 1}
+                                defaultChecked={Number(genParam) === index + 1}
+                            />
+                            <label
+                                className="filter-generations__label"
+                                htmlFor={generation.name}
+                                onClick={handleClickGen.bind(null, index + 1)}
+                            >
+                                {generation.name}
+                            </label>
+                        </Fragment>
+                    ))}
+                </div>
+            </form>
+        </div>
     );
 }

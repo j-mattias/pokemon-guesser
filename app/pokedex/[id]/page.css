@@ -60,7 +60,7 @@
     }
 
     & .details-wrapper {
-        width: 100%;
+        width: 80%;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 0.5rem;
@@ -88,6 +88,31 @@
                     display: flex;
                     justify-content: space-between;
                 }
+            }
+        }
+    }
+}
+
+@media (max-width: 1000px) {
+    & .pokemon-details-page {
+        & .details-wrapper {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    & .pokemon-details-page {
+        & .details-wrapper {
+            grid-template-columns: 1fr;
+
+            & > * {
+                border-bottom: 2px solid var(--faded-gray);
+                padding-block: 1rem;
+            }
+
+            & > *:last-child {
+                border: none;
             }
         }
     }
