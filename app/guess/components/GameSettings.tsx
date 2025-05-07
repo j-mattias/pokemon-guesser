@@ -16,6 +16,7 @@ interface IGameSettings {
     handleSelectGeneration: (option: TSingleValue) => void;
     handleSetIsGameActive: (bool: boolean) => void;
     isGenLoading: boolean;
+    isPokemonLoading: boolean;
 }
 
 export default function GameSettings({
@@ -25,6 +26,7 @@ export default function GameSettings({
     handleSelectGeneration,
     handleSetIsGameActive,
     isGenLoading,
+    isPokemonLoading,
 }: IGameSettings) {
     const [isClient, setIsClient] = useState<boolean>(false);
 
@@ -74,10 +76,10 @@ export default function GameSettings({
                 )}
                 <button
                     className="start-game"
-                    disabled={isGenLoading}
+                    disabled={isGenLoading || isPokemonLoading}
                     onClick={() => handleSetIsGameActive(true)}
                 >
-                    {isGenLoading ? "Loading..." : "Play"}
+                    {isGenLoading || isPokemonLoading ? "Loading..." : "Play"}
                 </button>
             </form>
         </>

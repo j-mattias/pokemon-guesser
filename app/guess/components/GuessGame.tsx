@@ -66,6 +66,7 @@ export default function GuessGame({ generations }: IGuessGame) {
                 handleSelectGeneration={handleSelectGeneration}
                 handleSetIsGameActive={handleSetIsGameActive}
                 isGenLoading={isGenLoading}
+                isPokemonLoading={isPokemonLoading}
                 generationNum={generationNum}
             />
 
