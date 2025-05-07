@@ -21,6 +21,7 @@ export default async function PokedexModal({ params }: IPokedexModal) {
     try {
         pokemon = await fetchPokemonByName(name);
     } catch (error) {
+        console.error(error);
         notFound();
     }
 

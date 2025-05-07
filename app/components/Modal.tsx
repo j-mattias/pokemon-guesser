@@ -48,7 +48,7 @@ export default function Modal({ children }: IModal) {
 
         document.addEventListener("keydown", onKeyDown);
         return () => document.removeEventListener("keydown", onKeyDown);
-    }, []);
+    }, [onClose]);
 
     // Calculate the scrollbar width, otherwise modal will be slightly offset
     useEffect(() => {

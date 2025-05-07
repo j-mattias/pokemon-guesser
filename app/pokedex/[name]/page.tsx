@@ -20,6 +20,7 @@ export default async function PokemonDetailsPage({ params }: IPokemonDetailsPage
     try {
         pokemon = await fetchPokemonByName(name);
     } catch (error) {
+        console.error(error);
         notFound();
     }
 
