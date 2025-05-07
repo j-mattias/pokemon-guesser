@@ -95,8 +95,8 @@
         }
 
         & .game-display__answer {
-            font-size: 3rem;
-            font-weight: bold;
+            font-family: var(--poke-font), Arial, Helvetica, sans-serif;
+            font-size: 4rem;
             text-transform: uppercase;
             margin: 0 auto;
             padding-right: 1rem;
@@ -105,6 +105,11 @@
             text-shadow: 2px 2px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1),
                 2px -2px 0px rgba(0, 0, 0, 1), -2px 2px 0px rgba(0, 0, 0, 1);
             color: var(--poke-yellow);
+            text-align: center;
+
+            & .question-mark {
+                font-size: 12rem;
+            }
         }
     }
 }
@@ -118,6 +123,10 @@
 
             & .game-display__answer {
                 padding: 0 0 1rem 0;
+
+                & .question-mark {
+                    font-size: inherit;
+                }
             }
         }
     }
@@ -136,7 +145,7 @@
             }
 
             & .game-display__answer {
-                font-size: 2rem;
+                font-size: 3rem;
             }
         }
     }

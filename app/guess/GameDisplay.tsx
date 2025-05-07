@@ -73,7 +73,7 @@ export default function GameDisplay({
                         )}
                     </div>
                     <figcaption className={`game-display__answer`}>
-                        {isRevealed ? pokemon?.name : "?"}
+                        {isRevealed ? pokemon?.name : <span className="question-mark">?</span>}
                     </figcaption>
                 </figure>
             </div>
