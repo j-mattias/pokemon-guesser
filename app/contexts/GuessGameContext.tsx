@@ -4,9 +4,8 @@ import { createContext, ReactNode, useContext, useEffect, useReducer, useState }
 
 import { Generation, MainClient, Pokemon } from "pokenode-ts";
 
-import { extractPokemonId, padStartId, randomizeNumber } from "@/utils/helpers";
+import { debugLog, extractPokemonId, padStartId, randomizeNumber } from "@/utils/helpers";
 import { TSingleValue } from "@/utils/types";
-import { DEBUG } from "@/data/globalVariables";
 
 interface IGuessGameProvider {
     children: ReactNode;
@@ -96,7 +95,7 @@ const pokemonIdReducer = (state: IState, action: TAction): IState => {
         const randomId = newIds.splice(randomNum, 1);
         const id = randomId[0];
 
-        DEBUG && console.log("Remaining ids: ", newIds);
+        debugLog(`Remaining ids: `, newIds);
         return { ...state, randomId: id, remainingIds: newIds };
     } else if (action.type === "pokemonIds") {
         // Update the pokemon id arrays
@@ -199,7 +198,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         const fetchGeneration = async (gen: number) => {
             try {
                 const genPokemon = await POKE_API.game.getGenerationById(gen);
-                DEBUG && console.log("Generation, ", genPokemon);
+                debugLog(`Generation: `, genPokemon)
 
                 setGeneration(genPokemon);
                 setIsGenLoading(false);
@@ -239,7 +238,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
             try {
                 const pokemon = await POKE_API.pokemon.getPokemonById(id);
                 setPokemon(pokemon);
-                DEBUG && console.log("fetched pokemon: ", pokemon.name);
+                debugLog(`Fetched pokemon: `, pokemon.name);
 
                 // Convert the pokemon id to a 3 digit string, compatible with the image url
                 const pokemonId = padStartId(id);
@@ -257,7 +256,8 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
             }
         };
         fetchPokemon(state.randomId);
-        DEBUG && console.log("randomId: ", state.randomId);
+        debugLog(`randomId: `, state.randomId);
+
         // The pokemonRefetch dependency allows the user to attempt to fetch the pokemon
         // again if there was an error during the game
     }, [state.randomId, pokemonRefetch]);

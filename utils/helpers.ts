@@ -49,3 +49,11 @@ export function validateInt(num: number): boolean {
     }
     return true;
 }
+
+// Only display console.log if debug = true
+export function debugLog<T>(logMsg: string | Error, ...args: T[]) {
+    const isDebug = process.env.NEXT_PUBLIC_DEBUG === "true";
+    if (isDebug) {
+        console.log(`[DEBUG]: ${logMsg}`, ...args)
+    }
+}
