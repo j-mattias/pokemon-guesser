@@ -9,10 +9,10 @@ import "./not-found.css";
 
 export default function NotFound() {
     const pathname = usePathname();
-    const pokemonId = pathname.split("/")[2];
+    const pokemonName = pathname.split("/")[2];
 
-    const message = `Could not find pokemon with id: ${pokemonId}`;
-    
+    const message = `Could not find pokemon with name: ${pokemonName}`;
+
     // Need to use router.back in order to close the modal with the back button
     // Updating href with Link component does not work
     const router = useRouter();

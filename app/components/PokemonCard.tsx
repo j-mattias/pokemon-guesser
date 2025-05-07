@@ -8,11 +8,11 @@ import { IPokemonBasic } from "@/utils/interfaces";
 
 import "./PokemonCard.css";
 
-export default function PokemonCard({ name, paddedId, id }: IPokemonBasic) {
+export default function PokemonCard({ name, paddedId }: IPokemonBasic) {
     const pathname = usePathname();
 
     return (
-        <Link className="pokemon-card-link" href={`${pathname}/${id}`} scroll={false}>
+        <Link className="pokemon-card-link" href={`${pathname}/${name}`} scroll={false}>
             <article className="pokemon-card">
                 <Image
                     src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedId}.png`}

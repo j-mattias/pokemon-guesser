@@ -13,6 +13,17 @@ export async function fetchPokemonById(id: number) {
     }
 }
 
+// Fetch pokemon by name
+export async function fetchPokemonByName(name: string) {
+    try {
+        const pokemon = await pokeApi.pokemon.getPokemonByName(name);
+        console.log("fetchPokemonByName: ", pokemon);
+        return pokemon;
+    } catch (error) {
+        throw new Error(`Failed to fetch pokemon with name: ${name}`);
+    }
+}
+
 // Fetch a list of generations
 export async function fetchGenerations() {
     try {

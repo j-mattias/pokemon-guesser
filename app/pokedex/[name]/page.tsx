@@ -1,30 +1,27 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { getTypeColor, padStartId, replaceCharWithSpace, validateInt } from "@/utils/helpers";
-import { POKEMON_MAX_COUNT } from "@/data/globalVariables";
-import { fetchPokemonById } from "@/utils/dataFetching";
+import { Pokemon } from "pokenode-ts";
+
+import { getTypeColor, padStartId, replaceCharWithSpace } from "@/utils/helpers";
+import { fetchPokemonByName } from "@/utils/dataFetching";
 
 import "./page.css";
 
 interface IPokemonDetailsPage {
-    params: Promise<{ id: string }>;
+    params: Promise<{ name: string }>;
 }
 
 export default async function PokemonDetailsPage({ params }: IPokemonDetailsPage) {
-    const { id } = await params;
-    const numId = Number(id);
+    const { name } = await params;
 
-    if (!validateInt(numId)) {
-        throw new Error(`"${id}" is not a valid pokemon id.`);
-    }
-
-    // Trigger a notFound response if id is below 1 or above POKEMON_MAX_COUNT (1025)
-    if (numId < 1 || numId > POKEMON_MAX_COUNT) {
+    // Show a notFound page instead of error if pokemon was not found
+    let pokemon: Pokemon;
+    try {
+        pokemon = await fetchPokemonByName(name);
+    } catch (error) {
         notFound();
     }
-
-    const pokemon = await fetchPokemonById(numId);
 
     const imageExists = pokemon.sprites.other?.["official-artwork"].front_default;
     const image = imageExists

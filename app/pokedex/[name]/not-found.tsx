@@ -7,9 +7,9 @@ import NotFoundPage from "@/app/components/NotFoundPage";
 
 export default function NotFound() {
     const pathname = usePathname();
-    const pokemonId = pathname.split("/")[2];
+    const pokemonName = pathname.split("/")[2];
 
-    const message = `Could not find pokemon with id: ${pokemonId}`;
+    const message = `Could not find pokemon with name: ${pokemonName}`;
 
     const link = (
         <Link className="link-btn" href={"/pokedex"}>
