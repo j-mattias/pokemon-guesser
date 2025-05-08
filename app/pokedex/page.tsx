@@ -7,7 +7,7 @@ import ListGlowItemBorders from "../components/ListGlowItemBorders";
 import PokemonCard from "../components/PokemonCard";
 import Pagination from "../components/Pagination";
 import FilterGeneration from "../components/FilterGeneration";
-import { addIdsToPokemonList, debugLog } from "@/utils/helpers";
+import { debugLog, modifyPokemonList } from "@/utils/helpers";
 import { IPokemonBasic } from "@/utils/interfaces";
 import { POKEMON_MAX_COUNT } from "@/data/globalVariables";
 import { fetchGenerationById, fetchGenerations, fetchPokemonList } from "@/utils/dataFetching";
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 const LIMIT = 40;
+const PATH = "/pokedex";
 
 export default async function PokedexPage({
     searchParams,
@@ -56,7 +57,7 @@ export default async function PokedexPage({
                 ? LIMIT + offset
                 : data.pokemon_species.length;
 
-        const modifiedPokemonList = addIdsToPokemonList(data.pokemon_species);
+        const modifiedPokemonList = modifyPokemonList(data.pokemon_species, PATH);
 
         // Sort the generation list by id (comes unsorted)
         const sortedList = modifiedPokemonList.sort((a, b) => a.id - b.id);
@@ -77,7 +78,7 @@ export default async function PokedexPage({
         const data = await fetchPokemonList(offset, LIMIT);
 
         // Set the results to show for a specified page
-        pokemonList = addIdsToPokemonList(data.results);
+        pokemonList = modifyPokemonList(data.results, PATH);
         debugLog(`All list: `, pokemonList);
 
         // Calculate the amount of pages needed to display all pokemon

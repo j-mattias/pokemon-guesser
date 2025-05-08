@@ -1,18 +1,17 @@
 "use client";
 
+import { memo } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { IPokemonBasic } from "@/utils/interfaces";
 
 import "./PokemonCard.css";
 
-export default function PokemonCard({ name, paddedId }: IPokemonBasic) {
-    const pathname = usePathname();
-
+function PokemonCardBase({ name, paddedId, href }: IPokemonBasic) {
     return (
-        <Link className="pokemon-card-link" href={`${pathname}/${name}`} scroll={false}>
+        <Link className="pokemon-card-link" href={href} scroll={false}>
             <article className="pokemon-card">
                 <Image
                     src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${paddedId}.png`}
@@ -26,3 +25,6 @@ export default function PokemonCard({ name, paddedId }: IPokemonBasic) {
         </Link>
     );
 }
+
+const PokemonCard = memo(PokemonCardBase);
+export default PokemonCard;

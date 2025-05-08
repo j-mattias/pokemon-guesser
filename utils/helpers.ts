@@ -20,12 +20,13 @@ export function padStartId(id: number): string {
     return id.toString().padStart(3, "0");
 }
 
-// Add id and paddedId to each pokemon object and store it in a new list
-export function addIdsToPokemonList(pokemonList: NamedAPIResource[]): IPokemonBasic[] {
+// Add id, paddedId and href to each pokemon object and store it in a new list
+export function modifyPokemonList(pokemonList: NamedAPIResource[], basePath: string): IPokemonBasic[] {
     return pokemonList.map((pokemon) => {
         const id = extractPokemonId(pokemon.url);
         const paddedId = padStartId(id);
-        return { ...pokemon, id, paddedId };
+        const href = basePath + "/" + pokemon.name;
+        return { ...pokemon, id, paddedId, href };
     });
 }
 

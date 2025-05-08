@@ -3,6 +3,7 @@ export interface IPokemonBasic {
     url: string;
     id: number;
     paddedId: string;
+    href: string;
 }
 
 export interface ISelectSingle {
