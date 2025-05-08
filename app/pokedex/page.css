@@ -1,4 +1,6 @@
 #pokedex-page {
+    padding-block: 2rem;
+
     & .pokedex-page__title {
         text-align: center;
         margin-top: 1rem;
