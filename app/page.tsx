@@ -33,7 +33,7 @@ export default function Start() {
             </article>
             <article className="instructions">
                 <div className="instructions__desc">
-                    <h2>Pokedex</h2>
+                    <h2>{`Pokédex`}</h2>
                     <p>{`Browse all Pokémon or pick a generation. Click a Pokémon to get some additional information about that Pokémon.`}</p>
                     <Link className="link-btn" href={`/pokedex`}>
                         Browse
