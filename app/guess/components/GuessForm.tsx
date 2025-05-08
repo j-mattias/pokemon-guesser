@@ -51,7 +51,7 @@ export default function GuessForm({ handleGuess, generation }: IGuessForm) {
                 return { value: pokemon.name, label: pokemon.name };
             });
             setOptions(options);
-            debugLog(`Options: ${options}`);
+            debugLog(`Options: `, options);
         }
     }, [generation]);
 
