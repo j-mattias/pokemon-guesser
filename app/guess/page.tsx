@@ -9,7 +9,7 @@ import "./page.css";
 
 export const metadata: Metadata = {
     title: "Guess Game",
-    description: "Guess Pokemon based on their silhouette",
+    description: "Guess Pokémon based on their silhouette",
 };
 
 const pokeFont = localFont({

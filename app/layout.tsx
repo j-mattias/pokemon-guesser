@@ -13,10 +13,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
     title: {
-        default: "Pokemon Guesser",
-        template: "%s | Pokemon Guesser",
+        default: "Pokémon Guesser",
+        template: "%s | Pokémon Guesser",
     },
-    description: "Play a Pokemon guessing game or browse Pokemon",
+    description: "Play a Pokémon guessing game or browse Pokémon",
 };
 
 export default function RootLayout({

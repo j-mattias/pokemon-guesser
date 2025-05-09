@@ -36,7 +36,7 @@ export default function Navbar() {
         <nav className={`navbar ${isOpen ? "fade-bg" : ""}`} ref={navRef}>
             <div className="nav-links">
                 <Link href={"/"} className="logo-link">
-                    <Image src={"/PG.svg"} alt={"Pokemon Guesser logo"} width={40} height={40} />
+                    <Image src={"/PG.svg"} alt={"Pokémon Guesser logo"} width={40} height={40} />
                 </Link>
 
                 {/* Visible for small screens */}
