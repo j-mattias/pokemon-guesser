@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -16,24 +16,45 @@ const NAV_LINKS = [
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [navHeight, setNavHeight] = useState<number>(60);
-    const navRef = useRef<HTMLElement | null>(null)
+    const navRef = useRef<HTMLElement | null>(null);
     const pathname = usePathname();
+
+    // Toggle scroll to add background to nav when page is scrolled
+    const handleScroll = useCallback(() => {
+        const isTop = document.body.scrollTop < navHeight;
+        if (isTop) {
+            setIsScrolled(false);
+        } else {
+            setIsScrolled(true);
+        }
+    }, [navHeight]);
 
     // Close nav once user has navigated
     useEffect(() => {
         setIsOpen(false);
-    }, [pathname])
+    }, [pathname]);
 
     // Get the nav height to offset top pos (responsive)
     useEffect(() => {
         if (!navRef.current) return;
 
         setNavHeight(navRef.current.clientHeight);
-    }, [])
+    }, []);
+
+    // Add listener to check if page is scrolled
+    useEffect(() => {
+        handleScroll();
+        document.body.addEventListener("scroll", handleScroll);
+        return () => document.body.removeEventListener("scroll", handleScroll);
+    }, [handleScroll]);
 
     return (
-        <nav className={`navbar ${isOpen ? "fade-bg" : ""}`} ref={navRef}>
+        <nav
+            className={`navbar ${isOpen ? "fade-bg" : ""} ${isScrolled ? "show-bg" : ""}`}
+            ref={navRef}
+        >
             <div className="nav-links">
                 <Link href={"/"} className="logo-link">
                     <Image src={"/PG.svg"} alt={"Pokémon Guesser logo"} width={40} height={40} />
@@ -48,7 +69,10 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                <div className={`nav-links__wrapper ${isOpen ? "show" : ""}`} style={{top: `${navHeight}px`}}>
+                <div
+                    className={`nav-links__wrapper ${isOpen ? "show" : ""}`}
+                    style={{ top: `${navHeight}px` }}
+                >
                     {NAV_LINKS.map((navLink) => {
                         const isActive =
                             navLink.href === pathname ||

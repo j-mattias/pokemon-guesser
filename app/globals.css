@@ -3,6 +3,7 @@
     --foreground: #ffffff;
     --primary-shadow: rgba(0, 0, 0, 0.4);
     --faded-gray: rgba(70, 70, 70, 0.5);
+    --nav-bg: rgb(40, 40, 40);
 
     --poke-red: #ee1515;
     --poke-dark: #222224;
@@ -13,6 +14,7 @@
 
     --max-width: 1200px;
     --b-radius: 6px;
+    --spacing: 60px;
 }
 
 html,
@@ -20,6 +22,7 @@ body {
     max-width: 100vw;
     overflow-x: hidden;
     height: 100%;
+    min-height: 100vh;
 }
 
 html {
@@ -100,6 +103,7 @@ ol {
     max-width: var(--max-width);
     width: 100%;
     margin: 0 auto;
+    padding-top: var(--spacing);
 }
 
 .spotlight-bg::after {

@@ -5,17 +5,28 @@
     color: var(--poke-light);
     padding: 10px 20px;
 
-    &.fade-bg::before {
-        position: absolute;
-        content: "";
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: transparent;
-        visibility: hidden;
-        opacity: 0;
-        transform: translateX(-16px);
+    position: fixed;
+    z-index: 9;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
+
+    &.show-bg {
+        background-color: var(--nav-bg);
+    }
+
+    &.fade-bg {
+        &::before {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateX(-16px);
+        }
     }
 
     & .nav-links {
@@ -86,6 +97,7 @@
             visibility: visible;
             opacity: 1;
             transform: translateX(0);
+            height: 100vh;
         }
 
         & .nav-links {
