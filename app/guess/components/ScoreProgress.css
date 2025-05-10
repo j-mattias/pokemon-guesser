@@ -19,12 +19,20 @@
     & .score-progress__bar-container {
         border-radius: 30px;
         background-color: rgba(128, 128, 128, 0.5);
-        height: 20px;
+        height: 15px;
         overflow: hidden;
 
         & .score-progress__bar {
             background-color: #ee2424;
             height: 100%;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    & .score-progress {
+        & .score-progress__bar-container {
+            height: 10px;
         }
     }
 }

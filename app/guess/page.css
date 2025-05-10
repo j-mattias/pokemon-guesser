@@ -1,8 +1,16 @@
 #guess-page {
     padding-block: 2rem;
-    
+
     & .guess-page__title {
         text-align: center;
         margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    & #guess-page {
+        & .guess-page__title {
+            font-size: 2rem;
+        }
     }
 }

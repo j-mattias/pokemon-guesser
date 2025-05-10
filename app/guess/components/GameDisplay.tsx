@@ -44,8 +44,8 @@ export default function GameDisplay({
                             className="game-display__glow-image"
                             src="glow.svg"
                             alt="Shining glow backdrop for pokemon"
-                            width={700}
-                            height={700}
+                            width={600}
+                            height={600}
                         />
                         {pokemonId && !isPokemonLoading && (
                             <Image
@@ -54,8 +54,8 @@ export default function GameDisplay({
                                 }`}
                                 src={image}
                                 alt={"Image of a pokemon silhouette to guess"}
-                                fill={true}
-                                sizes="(max-width: 600px) 100vw, (max-width: 1000px) 70vw, 50vw"
+                                width={450}
+                                height={450}
                             />
                         )}
 

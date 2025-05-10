@@ -38,6 +38,7 @@
         filter: none;
         transition: filter 1s ease-in;
         box-shadow: 0 0 30px 20px var(--primary-shadow);
+        max-height: 650px;
 
         &.grayscale {
             filter: grayscale(1);
@@ -57,8 +58,8 @@
             & .game-display__glow-image {
                 grid-row: 1 / 1;
                 grid-column: 1 / 1;
-                min-width: 700px;
-                min-height: 700px;
+                min-width: 600px;
+                min-height: 600px;
             }
 
             & .game-display__loading,
@@ -121,6 +122,23 @@
         & .game-display {
             flex-direction: column;
 
+            & .game-display__image-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                max-height: 40vh;
+
+                & .game-display__glow-image {
+                    min-width: 500px;
+                    min-height: 500px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+
             & .game-display__answer {
                 padding: 0 0 1rem 0;
 
@@ -136,16 +154,37 @@
     & .game-display-wrapper {
         & .game-display {
             & .game-display__image-wrapper {
-                grid-auto-columns: 340px 1fr;
-
-                & .game-display__glow-image {
-                    min-width: 600px;
-                    min-height: 600px;
+                & .game-display__pokemon-image {
+                    max-width: 100%;
+                    max-height: 100%;
                 }
             }
 
             & .game-display__answer {
-                font-size: 3rem;
+                font-size: 2rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    & .game-display-wrapper {
+        & .game-display {
+            & .game-display__image-wrapper {
+                max-height: 30vh;
+
+                & .game-display__glow-image {
+                    min-width: 400px;
+                    min-height: 400px;
+                }
+
+                & .game-display__loading {
+                    scale: 1.5;
+                }
+            }
+
+            & .game-display__answer {
+                font-size: 2rem;
             }
         }
     }

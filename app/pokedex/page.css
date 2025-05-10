@@ -13,3 +13,11 @@
         padding: 1rem;
     }
 }
+
+@media (max-width: 600px) {
+    & #pokedex-page {
+        & .pokedex-page__title {
+            font-size: 2rem;
+        }
+    }
+}
