@@ -38,8 +38,8 @@ export default async function PokedexModal({ params }: IPokedexModal) {
                         <Image
                             src={image}
                             alt={`Image of ${pokemon.name}`}
-                            width={500}
-                            height={500}
+                            width={400}
+                            height={400}
                         />
                     </figure>
                     <div className="pokemon-type">

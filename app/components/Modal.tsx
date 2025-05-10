@@ -13,6 +13,9 @@ type TRef = HTMLDivElement | null;
 
 export default function Modal({ children }: IModal) {
     const [scrollbarWidth, setScrollbarWidth] = useState<number>(0);
+    const [modalBottom, setBottom] = useState<number>(0);
+    const [hideFade, setHideFade] = useState<boolean>(true);
+
     const overlayRef = useRef<TRef>(null);
     const modalRef = useRef<TRef>(null);
     const xRef = useRef<TRef>(null);
@@ -37,6 +40,26 @@ export default function Modal({ children }: IModal) {
         [onClose, overlayRef, modalRef, xRef]
     );
 
+    // Ensure fade is at the bottom when scrolling and turn it off when scroll hits bottom
+    const handleScroll = useCallback(() => {
+        if (!modalRef.current) return;
+
+        // Get modal height, scrollHeight and how far it's scrolled from the top
+        const height = modalRef.current.offsetHeight;
+        const scrollHeight = modalRef.current.scrollHeight;
+        const scrollTop = modalRef.current.scrollTop;
+
+        // Update bottom value when modal scrolls
+        setBottom(scrollTop);
+
+        // Hide fade when scroll is at bottom
+        if (scrollTop < scrollHeight - height) {
+            setHideFade(false);
+        } else {
+            setHideFade(true);
+        }
+    }, []);
+
     // Add a listener for keydown on mount, and remove it once it's been pressed
     useEffect(() => {
         // Close the modal if Escape is pressed
@@ -56,6 +79,12 @@ export default function Modal({ children }: IModal) {
         setScrollbarWidth(scrollbarWidth);
     }, []);
 
+    // Ensure fade is hidden unless modal is scrollable
+    useEffect(() => {
+        if (!modalRef.current) return;
+        handleScroll();
+    }, [handleScroll]);
+
     return (
         <div
             className="modal-overlay"
@@ -63,7 +92,12 @@ export default function Modal({ children }: IModal) {
             onClick={handleClose}
             style={{ "--scrollbarWidth": `${scrollbarWidth}px` } as React.CSSProperties}
         >
-            <div className="modal" ref={modalRef}>
+            <div
+                className={`modal ${hideFade ? "hide-fade" : ""}`}
+                ref={modalRef}
+                onScroll={handleScroll}
+                style={{ "--modal-bottom": `-${modalBottom}px` } as React.CSSProperties}
+            >
                 <div className="modal-x" ref={xRef}></div>
                 {children}
             </div>
