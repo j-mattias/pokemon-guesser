@@ -13,7 +13,7 @@ interface IGameControls {
 
 export default function GameControls({ generationName, isGameOver, isRevealed }: IGameControls) {
     // Get state and handlers that arent shared in parent
-    const { isGameWon, generation, handleGuess, handleNext, handleRetry, hasGuessed, guess } =
+    const { isGameWon, generation, handleGuess, handleNext, handleRetry, isWrongGuess, guess } =
         useGuessGameContext();
 
     // Render UI based on the game state
@@ -36,11 +36,11 @@ export default function GameControls({ generationName, isGameOver, isRevealed }:
                     </button>
                 </>
             );
-        } else if (hasGuessed) {
+        } else if (isWrongGuess) {
             return (
                 <>
                     <p className="incorrect-guess">
-                        <span className="incorrect-guess__name">{guess}</span> was incorrect.
+                        <span className="incorrect-guess__name">"{guess}"</span> was incorrect.
                     </p>
                     <button className="next-btn" onClick={handleNext} autoFocus={true}>
                         Next
@@ -48,7 +48,7 @@ export default function GameControls({ generationName, isGameOver, isRevealed }:
                 </>
             );
         } else {
-            return isRevealed && hasGuessed ? (
+            return isRevealed ? (
                 <button className="next-btn" onClick={handleNext} autoFocus={true}>
                     Next
                 </button>

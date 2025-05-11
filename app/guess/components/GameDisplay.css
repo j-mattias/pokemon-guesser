@@ -38,7 +38,7 @@
         filter: none;
         transition: filter 1s ease-in;
         box-shadow: 0 0 30px 20px var(--primary-shadow);
-        max-height: 650px;
+        height: 650px;
         position: relative;
 
         &.grayscale {
@@ -46,30 +46,30 @@
         }
 
         & .game-display__image-wrapper {
-            display: grid;
-            grid-template-rows: 1fr;
-            align-items: center;
-            justify-items: center;
+            display: flex;
             justify-content: center;
-            grid-auto-columns: 450px 1fr;
-
+            align-items: center;
+            min-width: 450px;
+            height: 650px;
             position: relative;
-            aspect-ratio: 1 / 1;
 
             & .game-display__glow-image {
-                grid-row: 1 / 1;
-                grid-column: 1 / 1;
-                min-width: 600px;
-                min-height: 600px;
+                min-width: 650px;
+                min-height: 650px;
+                position: absolute;
+                top: 50%;
+                left: -100px;
+                transform: translate(0, -50%);
+                aspect-ratio: 1 / 1;
             }
 
             & .game-display__loading,
             & .game-display__pokemon-image,
             & .game-display__error {
-                grid-row: 1 / 1;
-                grid-column: 1 / 1;
                 color: var(--poke-dark);
                 font-weight: bold;
+                position: relative;
+                z-index: 2;
             }
 
             & .game-display__error {
@@ -116,8 +116,8 @@
 
         & .game-display__lives {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
         }
     }
 }
@@ -128,19 +128,15 @@
 
         & .game-display {
             flex-direction: column;
+            height: fit-content;
 
             & .game-display__image-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 100%;
                 max-height: 40vh;
 
                 & .game-display__glow-image {
                     min-width: 500px;
                     min-height: 500px;
-                    position: absolute;
-                    top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
                 }
@@ -160,10 +156,17 @@
 @media (max-width: 600px) {
     & .game-display-wrapper {
         & .game-display {
+            padding-top: 10px;
+
             & .game-display__image-wrapper {
                 & .game-display__pokemon-image {
-                    max-width: 100%;
-                    max-height: 100%;
+                    max-width: 70vw;
+                }
+
+                & .game-display__error {
+                    max-width: 65vw;
+                    text-align: center;
+                    text-wrap: balance;
                 }
             }
 
@@ -188,15 +191,20 @@
                 & .game-display__glow-image {
                     min-width: 400px;
                     min-height: 400px;
+                    height: 400px;
+                    width: 400px;
                 }
 
                 & .game-display__loading {
-                    scale: 1.5;
+                    & .game-display__pokeball {
+                        scale: 1.2;
+                    }
                 }
             }
 
             & .game-display__answer {
                 font-size: 2rem;
+                padding-bottom: 0.5rem;
             }
         }
     }

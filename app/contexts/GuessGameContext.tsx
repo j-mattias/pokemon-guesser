@@ -29,7 +29,7 @@ interface IGuessGameContext {
     guess: string;
     isGameOver: boolean;
     isRevealed: boolean;
-    hasGuessed: boolean;
+    isWrongGuess: boolean;
     isGameActive: boolean;
     isGameWon: boolean;
     genTotal: number;
@@ -121,9 +121,7 @@ const pokemonIdReducer = (state: IState, action: TAction): IState => {
             ...state,
             remainingIds: [...remainingIds, prevId],
         };
-    } 
-    
-    else {
+    } else {
         throw new Error("Unknown action in pokemonIdReducer.");
     }
 };
@@ -141,7 +139,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
     // Game state
     const [score, setScore] = useState<number>(0);
     const [lives, setLives] = useState<number>(MAX_LIVES);
-    const [hasGuessed, setHasGuessed] = useState<boolean>(false);
+    const [isWrongGuess, setIsWrongGuess] = useState<boolean>(false);
     const [guess, setGuess] = useState<string>("");
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
     const [isRevealed, setIsRevealed] = useState<boolean>(false);
@@ -178,18 +176,17 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
             // If guess is correct, update score, reveal pokemon
             setScore((prevScore) => prevScore + 1);
             setIsRevealed(true);
-            setHasGuessed(true)
+            setIsWrongGuess(false);
         } else if (lives > 1) {
             // If the guess is wrong, remove one life, add the id back into the guess pool and
             // set the guess to display it as incorrect
-            setLives(prevLives => prevLives - 1);
-            dispatch({type: "restoreId"});
-            setGuess(guess)
-            setHasGuessed(true)
-        } 
-        else {
+            setLives((prevLives) => prevLives - 1);
+            dispatch({ type: "restoreId" });
+            setGuess(guess);
+            setIsWrongGuess(true);
+        } else {
             // If lives run out set game over
-            setLives(prevLives => prevLives - 1);
+            setLives((prevLives) => prevLives - 1);
             setIsGameOver(true);
         }
     };
@@ -201,7 +198,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         }
         // Reset states and randomize new pokemon
         setIsRevealed(false);
-        setHasGuessed(false);
+        setIsWrongGuess(false);
         setGuess("");
         dispatch({ type: "randomize" });
     };
@@ -236,7 +233,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         const fetchGeneration = async (gen: number) => {
             try {
                 const genPokemon = await POKE_API.game.getGenerationById(gen);
-                debugLog(`Generation: `, genPokemon)
+                debugLog(`Generation: `, genPokemon);
 
                 setGeneration(genPokemon);
                 setIsGenLoading(false);
@@ -312,7 +309,7 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
                 isGameOver,
                 isGameActive,
                 isRevealed,
-                hasGuessed,
+                isWrongGuess,
                 isGameWon,
                 generation,
                 maxLives: MAX_LIVES,

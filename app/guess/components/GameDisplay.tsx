@@ -45,8 +45,8 @@ export default function GameDisplay({
                             className="game-display__glow-image"
                             src="glow.svg"
                             alt="Shining glow backdrop for pokemon"
-                            width={600}
-                            height={600}
+                            width={650}
+                            height={650}
                         />
                         {pokemonId && !isPokemonLoading && (
                             <Image
@@ -61,7 +61,9 @@ export default function GameDisplay({
                         )}
 
                         {isPokemonLoading && (
-                            <Pokeball className="game-display__loading" loader={"shake"} />
+                            <div className="game-display__loading">
+                                <Pokeball className="game-display__pokeball" loader={"shake"} />
+                            </div>
                         )}
 
                         {!isPokemonLoading && pokemonFetchError && (
