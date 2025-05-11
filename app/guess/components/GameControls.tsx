@@ -40,7 +40,7 @@ export default function GameControls({ generationName, isGameOver, isRevealed }:
             return (
                 <>
                     <p className="incorrect-guess">
-                        <span className="incorrect-guess__name">"{guess}"</span> was incorrect.
+                        <span className="incorrect-guess__name">{`"${guess}"`}</span> was incorrect.
                     </p>
                     <button className="next-btn" onClick={handleNext} autoFocus={true}>
                         Next
