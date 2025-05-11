@@ -9,7 +9,7 @@
         position: absolute;
         content: "";
         width: 100vw;
-        height: 700px;
+        height: 60vh;
         top: 0;
         left: 0;
         z-index: -1;
@@ -38,7 +38,7 @@
         filter: none;
         transition: filter 1s ease-in;
         box-shadow: 0 0 30px 20px var(--primary-shadow);
-        height: 650px;
+        height: 50vh;
         position: relative;
 
         &.grayscale {
@@ -140,6 +140,10 @@
                     left: 50%;
                     transform: translate(-50%, -50%);
                 }
+
+                & .game-display__pokemon-image {
+                    max-height: 100%;
+                }
             }
 
             & .game-display__answer {
@@ -156,8 +160,6 @@
 @media (max-width: 600px) {
     & .game-display-wrapper {
         & .game-display {
-            padding-top: 10px;
-
             & .game-display__image-wrapper {
                 & .game-display__pokemon-image {
                     max-width: 70vw;
