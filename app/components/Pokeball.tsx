@@ -6,7 +6,7 @@ interface IPokeball {
     scale?: number;
 }
 
-export default function Pokeball({ className, loader, scale=2 }: IPokeball) {
+export default function Pokeball({ className = "", loader, scale = 2 }: IPokeball) {
     const style = {
         "--pokeball-scale": scale,
     } as React.CSSProperties;
