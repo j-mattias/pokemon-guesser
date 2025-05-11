@@ -6,9 +6,9 @@
     gap: 1rem;
     min-height: 100px;
 
-    & .next-btn {
-        font-size: 1.5rem;
-        border-radius: 50px;
-        padding: 0.6rem 1.2rem;
+    & .incorrect-guess {
+        & .incorrect-guess__name {
+            text-transform: capitalize;
+        }
     }
 }

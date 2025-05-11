@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Pokemon } from "pokenode-ts";
 
 import Pokeball from "../../components/Pokeball";
+import GameLives from "./GameLives";
 
 import { TErrorState } from "../../contexts/GuessGameContext";
 
@@ -75,6 +76,7 @@ export default function GameDisplay({
                     <figcaption className={`game-display__answer`}>
                         {isRevealed ? pokemon?.name : <span className="question-mark">?</span>}
                     </figcaption>
+                    <GameLives className="game-display__lives" />
                 </figure>
             </div>
         </div>

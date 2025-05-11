@@ -39,6 +39,7 @@
         transition: filter 1s ease-in;
         box-shadow: 0 0 30px 20px var(--primary-shadow);
         max-height: 650px;
+        position: relative;
 
         &.grayscale {
             filter: grayscale(1);
@@ -112,6 +113,12 @@
                 font-size: 12rem;
             }
         }
+
+        & .game-display__lives {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
     }
 }
 
@@ -162,6 +169,11 @@
 
             & .game-display__answer {
                 font-size: 2rem;
+            }
+
+            & .game-display__lives {
+                top: 5px;
+                right: 5px;
             }
         }
     }
