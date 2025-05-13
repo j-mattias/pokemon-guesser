@@ -7,6 +7,7 @@ import ListGlowItemBorders from "../components/ListGlowItemBorders";
 import PokemonCard from "../components/PokemonCard";
 import Pagination from "../components/Pagination";
 import FilterGeneration from "../components/FilterGeneration";
+import Search from "../components/Search";
 import { debugLog, modifyPokemonList } from "@/utils/helpers";
 import { IPokemonBasic } from "@/utils/interfaces";
 import { POKEMON_MAX_COUNT } from "@/data/globalVariables";
@@ -25,14 +26,19 @@ const PATH = "/pokedex";
 export default async function PokedexPage({
     searchParams,
 }: {
-    searchParams: Promise<{ page?: string; gen?: string }>;
+    searchParams: Promise<{ page?: string; gen?: string; query?: string }>;
 }) {
-    const { page, gen } = await searchParams;
+    const { page, gen, query } = await searchParams;
     const pageNum = Number(page),
         genNum = Number(gen);
 
     // Fetch list of pokemon generations for filter component
     const pokemonGenerations = await fetchGenerations();
+
+    // Fetch full list of pokemon and modify it
+    const fullPokemonList = await fetchPokemonList(0, POKEMON_MAX_COUNT);
+    const fullPokemonListModified = modifyPokemonList(fullPokemonList.results, PATH);
+    debugLog("fullPokemonList: ", fullPokemonListModified);
 
     const currentPage = pageNum || 1;
     debugLog(`searchParams: `, page);
@@ -68,22 +74,23 @@ export default async function PokedexPage({
 
         // Calculate the amount of pages needed to display all pokemon in given generation
         pages = Math.ceil(sortedList.length / LIMIT);
-    } else {
-        // Prevent offset from getting pokemon beyond the max count
-        // Max allowed offset is currently 985, since offset starts at 0, and max count is 1025
-        if (offset + LIMIT > POKEMON_MAX_COUNT) {
-            offset = POKEMON_MAX_COUNT - LIMIT;
-        }
-        // Fetch LIMIT pokemon at a time
-        const data = await fetchPokemonList(offset, LIMIT);
+    } else if (query) {
+        // If there's a search query, filter results including that query
+        const searchResults = fullPokemonListModified.filter(pokemon => {
+            return pokemon.name.includes(query);
+        });
 
-        // Set the results to show for a specified page
-        pokemonList = modifyPokemonList(data.results, PATH);
-        debugLog(`All list: `, pokemonList);
+        // Paginate the results
+        pokemonList = searchResults.slice(offset, LIMIT + offset);
+        pages = Math.ceil(searchResults.length / LIMIT);
+    } else {
+        // Slice the full pokemon list based on offset and LIMIT
+        pokemonList = fullPokemonListModified.slice(offset, LIMIT + offset);
+        debugLog("Sliced list: ", pokemonList);
 
         // Calculate the amount of pages needed to display all pokemon
         // (with available images) in the list
-        pages = Math.ceil(POKEMON_MAX_COUNT / LIMIT);
+        pages = Math.ceil(fullPokemonListModified.length / LIMIT);
     }
 
     // Validate searchParams
@@ -98,13 +105,15 @@ export default async function PokedexPage({
     return (
         <main id="pokedex-page">
             <h1 className="pokedex-page__title">{`Pokédex`}</h1>
-            <FilterGeneration generations={pokemonGenerations.results} />
+            <Search path={PATH} query={query} />
+            <FilterGeneration generations={pokemonGenerations.results} gen={gen} />
             <ListGlowItemBorders
                 list={pokemonList}
                 cardComponent={PokemonCard}
                 itemStyles={itemStyles}
                 className="pokemon-list"
             />
+            {pokemonList.length === 0 && <p style={{textAlign: "center"}}>{`No results for "${query}".`}</p>}
             {pages > 1 && <Pagination pages={pages} currentPage={currentPage} />}
         </main>
     );

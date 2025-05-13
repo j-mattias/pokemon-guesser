@@ -48,7 +48,7 @@ export async function fetchGenerationById(genId: number) {
 }
 
 // Fetch a list of all pokemon
-export async function fetchPokemonList(offset: number, limit: number) {
+export async function fetchPokemonList(offset?: number, limit?: number) {
     try {
         const pokemonList = await pokeApi.pokemon.listPokemons(offset, limit);
         debugLog("fetchPokemonList: ", pokemonList);

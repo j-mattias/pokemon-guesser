@@ -12,9 +12,10 @@ import "./FilterGeneration.css";
 
 interface IFilterGeneration {
     generations: NamedAPIResource[];
+    gen: string | undefined;
 }
 
-export default function FilterGeneration({ generations }: IFilterGeneration) {
+export default function FilterGeneration({ generations, gen }: IFilterGeneration) {
     const [open, setOpen] = useState<boolean>(false);
     const ref = useRef<HTMLDivElement | null>(null);
 
@@ -23,8 +24,6 @@ export default function FilterGeneration({ generations }: IFilterGeneration) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-
-    const genParam = searchParams.get("gen");
 
     // Creates a new searchParams string by merging current searchParams
     // with the provided key/value pair
@@ -69,7 +68,8 @@ export default function FilterGeneration({ generations }: IFilterGeneration) {
                         id="all"
                         hidden={true}
                         value={`all`}
-                        defaultChecked={!genParam}
+                        checked={!gen}
+                        readOnly
                     />
                     <label
                         className="filter-generations__label"
@@ -86,7 +86,8 @@ export default function FilterGeneration({ generations }: IFilterGeneration) {
                                 id={generation.name}
                                 hidden={true}
                                 value={index + 1}
-                                defaultChecked={Number(genParam) === index + 1}
+                                checked={Number(gen) === index + 1}
+                                readOnly
                             />
                             <label
                                 className="filter-generations__label"

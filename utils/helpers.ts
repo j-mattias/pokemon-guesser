@@ -26,7 +26,9 @@ export function modifyPokemonList(pokemonList: NamedAPIResource[], basePath: str
         const id = extractPokemonId(pokemon.url);
         const paddedId = padStartId(id);
         const href = basePath + "/" + pokemon.name;
-        return { ...pokemon, id, paddedId, href };
+        const newName = replaceCharWithSpace(pokemon.name, "-");
+        
+        return { ...pokemon, id, paddedId, href, name: newName };
     });
 }
 
