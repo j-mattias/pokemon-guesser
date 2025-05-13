@@ -94,42 +94,46 @@ const pokemonIdReducer = (state: IState, action: TAction): IState => {
     // Destructure state variables
     const { remainingIds, staticIds, prevId } = state;
 
-    // Randomize a new pokemonId
-    if (action.type === "randomize") {
-        // If reseting, use list of static ids, otherwise use remaining
-        let newIds: number[];
-        if (action.reset) {
-            newIds = [...staticIds];
-        } else {
-            newIds = [...remainingIds];
+    switch (action.type) {
+        case "randomize": {
+            // If reseting, use list of static ids, otherwise use remaining
+            let newIds: number[];
+            if (action.reset) {
+                newIds = [...staticIds];
+            } else {
+                newIds = [...remainingIds];
+            }
+
+            // Randomize an index based on the length of the remainingIds.
+            // Remove and extract id from the remaining ids
+            const randomNum = randomizeNumber(0, newIds.length - 1);
+            const randomId = newIds.splice(randomNum, 1);
+            const id = randomId[0];
+
+            debugLog(`Remaining ids: `, newIds);
+            return { ...state, randomId: id, remainingIds: newIds, prevId: id };
         }
+        case "pokemonIds": {
+            // Update the pokemon id arrays
+            const newState = {
+                ...state,
+                remainingIds: action.remainingIds,
+                staticIds: action.remainingIds,
+            };
 
-        // Randomize an index based on the length of the remainingIds.
-        // Remove and extract id from the remaining ids
-        const randomNum = randomizeNumber(0, newIds.length - 1);
-        const randomId = newIds.splice(randomNum, 1);
-        const id = randomId[0];
-
-        debugLog(`Remaining ids: `, newIds);
-        return { ...state, randomId: id, remainingIds: newIds, prevId: id };
-    } else if (action.type === "pokemonIds") {
-        // Update the pokemon id arrays
-        const newState = {
-            ...state,
-            remainingIds: action.remainingIds,
-            staticIds: action.remainingIds,
-        };
-
-        // Randomize an id from the new array
-        return pokemonIdReducer(newState, { type: "randomize", reset: true });
-    } else if (action.type === "restoreId") {
-        // Add the id back into remainingIds if guess was incorrect
-        return {
-            ...state,
-            remainingIds: [...remainingIds, prevId],
-        };
-    } else {
-        throw new Error("Unknown action in pokemonIdReducer.");
+            // Randomize an id from the new array
+            return pokemonIdReducer(newState, { type: "randomize", reset: true });
+        }
+        case "restoreId": {
+            // Add the id back into remainingIds if guess was incorrect
+            return {
+                ...state,
+                remainingIds: [...remainingIds, prevId],
+            };
+        }
+        default: {
+            throw new Error(`Unknown action in pokemonIdReducer.`);
+        }
     }
 };
 
