@@ -4,7 +4,14 @@ import { createContext, ReactNode, useContext, useEffect, useReducer, useState }
 
 import { Generation, MainClient, Pokemon } from "pokenode-ts";
 
-import { debugLog, extractPokemonId, padStartId, randomizeNumber } from "@/utils/helpers";
+import {
+    debugLog,
+    extractPokemonId,
+    padStartId,
+    randomizeNumber,
+    replaceCharWithSpace,
+} from "@/utils/helpers";
+
 import { TSingleValue } from "@/utils/types";
 
 interface IGuessGameProvider {
@@ -233,9 +240,14 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         const fetchGeneration = async (gen: number) => {
             try {
                 const genPokemon = await POKE_API.game.getGenerationById(gen);
-                debugLog(`Generation: `, genPokemon);
+                // Edit the pokemon names to remove dashes
+                const updatedPokemonSpecies = genPokemon.pokemon_species.map((pokemon) => {
+                    return { ...pokemon, name: replaceCharWithSpace(pokemon.name, "-") };
+                });
+                const updatedGenPokemon = { ...genPokemon, pokemon_species: updatedPokemonSpecies };
+                debugLog(`Generation: `, updatedGenPokemon);
 
-                setGeneration(genPokemon);
+                setGeneration(updatedGenPokemon);
                 setIsGenLoading(false);
             } catch (error) {
                 console.error(error);
@@ -272,15 +284,20 @@ export function GuessGameContextProvider({ children }: IGuessGameProvider) {
         const fetchPokemon = async (id: number) => {
             try {
                 const pokemon = await POKE_API.pokemon.getPokemonById(id);
-                setPokemon(pokemon);
-                debugLog(`Fetched pokemon: `, pokemon.name);
+                // Edit pokemon name to remove dash
+                const updatedPokemon = {
+                    ...pokemon,
+                    name: replaceCharWithSpace(pokemon.name, "-"),
+                };
+                setPokemon(updatedPokemon);
+                debugLog(`Fetched pokemon: `, updatedPokemon.name);
 
                 // Convert the pokemon id to a 3 digit string, compatible with the image url
                 const pokemonId = padStartId(id);
                 setPokemonId(pokemonId);
 
                 // Set the pokemon name, for checking correct guess
-                setPokemonName(pokemon.name);
+                setPokemonName(updatedPokemon.name);
 
                 setPokemonFetchError(null);
                 setIsPokemonLoading(false);
