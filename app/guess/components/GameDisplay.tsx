@@ -14,6 +14,7 @@ interface IGameDisplay {
     pokemonId: string;
     isRevealed: boolean;
     isGameOver: boolean;
+    isWrongGuess: boolean;
     isPokemonLoading: boolean;
     pokemonFetchError: TErrorState;
     handleRefetchPokemon: () => void;
@@ -24,6 +25,7 @@ export default function GameDisplay({
     pokemonId,
     isRevealed,
     isGameOver,
+    isWrongGuess,
     isPokemonLoading,
     pokemonFetchError,
     handleRefetchPokemon,
@@ -73,6 +75,15 @@ export default function GameDisplay({
                                     Retry
                                 </button>
                             </div>
+                        )}
+                        {(isWrongGuess || isGameOver) && (
+                            <Image
+                                className="game-display__incorrect"
+                                src={"/incorrect_x.svg"}
+                                alt="X indicating incorrect guess."
+                                width={300}
+                                height={300}
+                            />
                         )}
                     </div>
                     <figcaption className={`game-display__answer`}>

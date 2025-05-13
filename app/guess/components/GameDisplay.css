@@ -94,6 +94,19 @@
                     transition: all 1s ease-in;
                 }
             }
+
+            & .game-display__incorrect {
+                position: absolute;
+                content: "";
+                top: 50%;
+                left: 50%;
+                color: var(--poke-red);
+                transform: translate(-50%, -50%);
+                filter: drop-shadow(0 0 8px var(--poke-red));
+                z-index: 3;
+                pointer-events: none;
+                opacity: 0.9;
+            }
         }
 
         & .game-display__answer {
@@ -170,6 +183,10 @@
                     text-align: center;
                     text-wrap: balance;
                 }
+
+                & .game-display__incorrect {
+                    width: 200px;
+                }
             }
 
             & .game-display__answer {
@@ -201,6 +218,10 @@
                     & .game-display__pokeball {
                         scale: 1.2;
                     }
+                }
+
+                & .game-display__incorrect {
+                    width: 150px;
                 }
             }
 
