@@ -24,6 +24,8 @@ export default async function PokemonDetailsPage({ params }: IPokemonDetailsPage
         notFound();
     }
 
+    const pokemonName = replaceCharWithSpace(pokemon.name, "-");
+
     const imageExists = pokemon.sprites.other?.["official-artwork"].front_default;
     const image = imageExists
         ? imageExists
@@ -33,7 +35,7 @@ export default async function PokemonDetailsPage({ params }: IPokemonDetailsPage
         <div className="pokemon-details-page">
             <div className="pokemon-wrapper">
                 <div className="pokemon-type">
-                    <h1 className="pokemon-name">{pokemon.name}</h1>
+                    <h1 className="pokemon-name">{pokemonName}</h1>
                     <ul className="pokemon-type-list">
                         {pokemon.types.map((type) => (
                             <li
@@ -47,7 +49,7 @@ export default async function PokemonDetailsPage({ params }: IPokemonDetailsPage
                     </ul>
                 </div>
                 <figure className="pokemon-image">
-                    <Image src={image} alt={`Image of ${pokemon.name}`} width={500} height={500} />
+                    <Image src={image} alt={`Image of ${pokemonName}`} width={500} height={500} />
                 </figure>
             </div>
             <div className="details-wrapper">

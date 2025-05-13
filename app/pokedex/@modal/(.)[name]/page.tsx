@@ -25,6 +25,8 @@ export default async function PokedexModal({ params }: IPokedexModal) {
         notFound();
     }
 
+    const pokemonName = replaceCharWithSpace(pokemon.name, "-");
+
     const imageExists = pokemon.sprites.other?.["official-artwork"].front_default;
     const image = imageExists
         ? imageExists
@@ -37,13 +39,13 @@ export default async function PokedexModal({ params }: IPokedexModal) {
                     <figure className="pokemon-image">
                         <Image
                             src={image}
-                            alt={`Image of ${pokemon.name}`}
+                            alt={`Image of ${pokemonName}`}
                             width={400}
                             height={400}
                         />
                     </figure>
                     <div className="pokemon-type">
-                        <h2 className="pokemon-name">{pokemon.name}</h2>
+                        <h2 className="pokemon-name">{pokemonName}</h2>
                         <ul className="pokemon-type-list">
                             {pokemon.types.map((type) => (
                                 <li
