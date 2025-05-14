@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import "./Navbar.css";
 
@@ -20,6 +20,7 @@ export default function Navbar() {
     const [navHeight, setNavHeight] = useState<number>(60);
     const navRef = useRef<HTMLElement | null>(null);
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     // Toggle scroll to add background to nav when page is scrolled
     const handleScroll = useCallback(() => {
@@ -34,7 +35,7 @@ export default function Navbar() {
     // Close nav once user has navigated
     useEffect(() => {
         setIsOpen(false);
-    }, [pathname]);
+    }, [pathname, searchParams]);
 
     // Get the nav height to offset top pos (responsive)
     useEffect(() => {
