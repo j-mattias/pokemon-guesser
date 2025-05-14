@@ -105,7 +105,7 @@ export default async function PokedexPage({
     return (
         <main id="pokedex-page">
             <h1 className="pokedex-page__title">{`Pokédex`}</h1>
-            <Search path={PATH} query={query} />
+            <Search placeholder="Pokémon" query={query} />
             <FilterGeneration generations={pokemonGenerations.results} gen={gen} />
             <ListGlowItemBorders
                 list={pokemonList}
@@ -113,7 +113,9 @@ export default async function PokedexPage({
                 itemStyles={itemStyles}
                 className="pokemon-list"
             />
-            {pokemonList.length === 0 && <p style={{textAlign: "center"}}>{`No results for "${query}".`}</p>}
+            {pokemonList.length === 0 && (
+                <p style={{ textAlign: "center" }}>{`No results for "${query}".`}</p>
+            )}
             {pages > 1 && <Pagination pages={pages} currentPage={currentPage} />}
         </main>
     );

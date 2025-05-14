@@ -2,24 +2,49 @@
 
 import { useEffect, useState } from "react";
 
-import Form from "next/form";
+import { usePathname, useRouter } from "next/navigation";
+
+import debounce from "debounce";
 
 import { debugLog } from "@/utils/helpers";
 
 import "./Search.css";
 
 interface ISearch {
-    path: string;
-    query?: string | undefined;
+    query?: string;
+    placeholder?: string;
 }
 
-export default function Search({ path, query }: ISearch) {
-    const [input, setInput] = useState<string>(query ?? "");
-    debugLog("Search query: ", query);
+export default function Search({ placeholder = "Search", query = "" }: ISearch) {
+    const [input, setInput] = useState<string>(query);
 
-    // Update the input value when user types
+    const router = useRouter();
+    const pathname = usePathname();
+
+    // Debounce updating searchQuery to reduce requests
+    const debounceInputQuery = debounce((searchQuery: string) => {
+        // Reset any params
+        const params = new URLSearchParams();
+        debugLog("Search query: ", searchQuery);
+
+        // If query is empty remove the query, otherwise update URL with query
+        if (!searchQuery.trim()) {
+            params.delete("query");
+        } else {
+            params.set("query", searchQuery);
+        }
+        router.push(`${pathname}?${params.toString()}`);
+    }, 300);
+
+    // Update the input value and search param when user types
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInput(e.target.value);
+        const searchQuery = e.target.value;
+
+        // Prevent empty strings
+        if (searchQuery.length > 0 && !searchQuery.trim()) return;
+
+        setInput(searchQuery);
+        debounceInputQuery(searchQuery);
     };
 
     // Clear the input field if there's no search query
@@ -30,16 +55,16 @@ export default function Search({ path, query }: ISearch) {
     }, [query]);
 
     return (
-        <Form action={path} className="search">
+        <form className="search">
             <input
                 className="search__input"
                 name="query"
                 type="search"
-                placeholder="Pokémon"
+                placeholder={placeholder}
                 value={input}
                 onChange={handleChange}
             />
             <button className="search__submit" type="submit" disabled={!input.trim()} />
-        </Form>
+        </form>
     );
 }
