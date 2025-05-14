@@ -44,7 +44,7 @@ export default async function PokedexPage({
     debugLog(`searchParams: `, page);
 
     // Calculate the offset for fetching pokemon
-    let offset: number = (currentPage - 1) * LIMIT || 0;
+    const offset: number = (currentPage - 1) * LIMIT || 0;
     debugLog(`offset: `, offset);
 
     // Initialize a list to store pokemon data and pages for pagination
